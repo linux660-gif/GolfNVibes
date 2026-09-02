@@ -1,0 +1,39 @@
+{
+    "tournaments":[
+    {
+      "image": "https://golfnvibes.co.ke/media/images/vipingogolfexperience.jpeg",
+      "title": "Vipingo Golf Experience",
+      "description":
+        "Compete on East Africa’s premier championship course where the fairways meet the wild. Includes an exclusive post-round coastal experience.",
+      "venue": "Vipingo Ridge, Kenya",
+      "date": "15th June 2026",
+      "purse": "30000"
+    },
+    {
+      "image": "https://golfnvibes.co.ke/media/images/arushagolfexperience.webp",
+      "title": "Arusha Golf Experience",
+      "description":
+        "Catch the ultimate tropical vibes at this exclusive exhibition, featuring scenic greens, local DJ sets, and premium hospitality.",
+      "venue": "Kiligolf, Arusha, Tanzania",
+      "date": "28th April 2026",
+      "purse": "18000"
+    },
+    {
+      "image": "https://golfnvibes.co.ke/media/images/turkeygolfexperience.jpg",
+      "title": "Turkey Golf Experience",
+      "description":
+        "A luxury golf getaway along the Mediterranean coast, featuring world-class resort courses and premium hospitality.",
+      "venue": "Antalya Golf Club, Turkey",
+      "date": "20th May 2026",
+      "purse": "35000"
+    },
+    {
+      "image": "https://golfnvibes.co.ke/media/images/moroccogolfexperience.png",
+      "title": "Morocco Golf Experience",
+      "description": "A high-stakes weekend shootout under the Moroccan sun, blending fierce tournament play with evening desert oasis parties and live percussion.",
+      "venue": "Mazagan Golf Club, Morocco",
+      "date": "12th March 2026",
+      "purse": "25000"
+    }
+]
+}

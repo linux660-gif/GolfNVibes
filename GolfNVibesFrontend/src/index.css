@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@import "flowbite-react/plugin/tailwindcss";
+@source "../.flowbite-react/class-list.json";
+@plugin "tailwindcss-motion";
+@plugin "tailwindcss-intersect";
+.gnv-calendar .react-calendar {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+}
+.gnv-calendar .react-calendar__tile--active {
+  background: #0a4d30 !important;
+  color: white;
+  border-radius: 0.5rem;
+}
+.gnv-calendar .react-calendar__tile:hover {
+  background: #d4af3733;
+  border-radius: 0.5rem;
+}
+.gnv-calendar .react-calendar__navigation button:hover {
+  background: #d4af3733;
+  border-radius: 0.5rem;
+}

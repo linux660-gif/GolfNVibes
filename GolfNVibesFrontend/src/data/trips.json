@@ -1,0 +1,36 @@
+{
+  "trips": [
+    {
+      "title": "Naivasha Weekender",
+      "description": "Spend your mornings hacking it out on Gary Player’s coastal links and your nights exploring the vibrant, neon-lit souks and luxury rooftop lounges of Morocco.",
+      "location": "El Jadida & Marrakech, Morocco",
+      "rating": 4.8,
+      "videoUrl": "https://golfnvibes.co.ke/media/videos/intt(1).mp4",
+      "reviews": 129
+    },
+    {
+      "title": "⁠Road to Turkey Sigona",
+      "description": "Championship-grade golf tucked away in the lush Hua Hin foothills, rounded out with private villa pool parties, street food safaris, and ultimate tropical relaxation.",
+      "location": "Hua Hin, Thailand",
+      "rating": 4.9,
+      "videoUrl": "https://golfnvibes.co.ke/media/videos/GOLFC.mp4",
+      "reviews": 378
+    },
+    {
+      "title": "⁠Road to Morroco",
+      "description": "Tee off on East Africa’s only PGA-accredited course alongside wild roaming zebras, then head down to a private Indian Ocean beach club for fresh seafood and sunset DJ sets.",
+      "location": "Vipingo Ridge, Kenya",
+      "rating": 4.7,
+      "videoUrl": "https://golfnvibes.co.ke/media/videos/dinner2.mp4",
+      "reviews": 259
+    },
+    {
+      "title": "⁠Road to Morroco",
+      "description": "Tee off on East Africa’s only PGA-accredited course alongside wild roaming zebras, then head down to a private Indian Ocean beach club for fresh seafood and sunset DJ sets.",
+      "location": "Vipingo Ridge, Kenya",
+      "rating": 4.7,
+      "videoUrl": "https://golfnvibes.co.ke/media/videos/dinner2.mp4",
+      "reviews": 259
+    }
+  ]
+}

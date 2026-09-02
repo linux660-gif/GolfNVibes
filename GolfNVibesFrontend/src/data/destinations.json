@@ -1,0 +1,47 @@
+{
+  "CONTINENTS": [
+    {
+      "continent": "Africa",
+      "destinations": [
+        "Kenya",
+        "South Africa",
+        "Morocco",
+        "Tanzania",
+        "Mauritius",
+        "Egypt",
+        "Zambia"
+      ]
+    },
+    {
+      "continent": "Middle East",
+      "destinations": ["UAE (Dubai & Abu Dhabi)"]
+    },
+    {
+      "continent": "Asia",
+      "destinations": ["Thailand", "Vietnam", "Cambodia", "Japan"]
+    },
+    {
+      "continent": "Europe",
+      "destinations": [
+        "Turkey",
+        "Portugal",
+        "Spain",
+        "Scotland",
+        "Ireland",
+        "England"
+      ]
+    },
+    {
+      "continent": "Americas",
+      "destinations": ["USA", "Mexico", "Dominican Republic"]
+    },
+    {
+      "continent": "Oceania",
+      "destinations": ["Australia", "New Zealand"]
+    },
+    {
+      "continent": "Other",
+      "destinations": ["Other (Please Specify)"]
+    }
+  ]
+}

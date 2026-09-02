@@ -1,0 +1,81 @@
+[
+  {
+    "id": "option1",
+    "title": "Day 2 Thursday 22October",
+    "features": {
+      "Morning": [
+        "Splash cafe -Elephant by the beach",
+        "Luxury spar experience",
+        "Relax at the Resort pool and beach"
+      ],
+      "Afternoon": ["Glass house lion cafe", "Boat Avenue shopping"],
+      "Evening": ["Cafe del Mar phuket", "sunset cocktail and Live Dj"]
+    },
+    "price": "$100"
+  },
+  {
+    "id": "option2",
+    "title": "Day 3 Friday 23October",
+    "features": {
+      "Evening": ["Dinner at 3 monkeys Restaurant"]
+    },
+    "price": "$100"
+  },
+  {
+    "id": "option3",
+    "title": "Day 4 Saturday 24October",
+    "features": {
+      "Morning": ["Lily pad photoshoot (US$30)", "Central phuket shopping"],
+      "Afternoon": ["Luxury spa experience"],
+      "Evening": [
+        "Golf N vibes white party",
+        "YONA Beach Club",
+        "Floating Beach Club Experience",
+        "Sunset",
+        "Dj entertainment",
+        "Cocktails",
+        "Dinner",
+        "Dress code: white with Gold or Turquoise Accessories"
+      ]
+    },
+    "price": "$100"
+  },
+  {
+    "id": "option4",
+    "title": "Day 5 Sunday 25October",
+    "features": {
+      "Morning": [
+        "Andamanda phuket water park",
+        "Big Budda and Wat Chalong Tour"
+      ],
+      "Afternoon": [
+        "Phuket old Town walking Tour",
+        "Fira phuket",
+        "Barra Cuda Beach Club",
+        "Smigos Beach Club",
+        "Tann Beach Club"
+      ],
+      "Evening": ["Dinner at SuVaNa Mermaids"]
+    },
+    "price": "$100"
+  },
+  {
+    "id": "option5",
+    "title": "Day 6 Monday 26October",
+    "features": {
+      "Morning": ["Tree Bay Club house", "The commune"],
+      "Afternoon": ["Beach Relaxation", "Shopping"],
+      "Evening": ["Sunset Drinks at Akoya Star Lounge"]
+    },
+    "price": "$100"
+  },
+  {
+    "id": "option6",
+    "title": "Day 7 Tuesday 27October",
+    "features": {
+      "Morning": ["Beach relaxation", "Last - minute shopping", "Cafe Hopping"],
+      "Afternoon": ["Free time at the Resort"]
+    },
+    "price": "$100"
+  }
+]
