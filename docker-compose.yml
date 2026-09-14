@@ -5,9 +5,10 @@ services:
     env_file:
       - ./Backend/.env
     ports:
-      - "5432:5432"
+      - "5432"
     volumes:
       - golfnvibes_db_data:/var/lib/postgresql/data
+    restart: always
 
   backend:
     build:
@@ -17,11 +18,10 @@ services:
     env_file:
       - ./Backend/.env
     ports:
-      - "8000:8000"
+      - "8000"
     depends_on:
       - database
-    volumes:
-      - ./Backend:/app
+    restart: always
 
   frontend:
     build:
@@ -29,12 +29,10 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     ports:
-      - "3000:3000"
+      - "3000"
     depends_on:
       - backend
-    volumes:
-      - ./Frontend:/app
-      - /app/node_modules
+    restart: always
 
 volumes:
   golfnvibes_db_data:

@@ -50,9 +50,9 @@ app.add_exception_handler(
 # app.mount("/static", StaticFiles(directory="static"), name='static')
 
 templates = Jinja2Templates(directory="app/templates")
-
-allowed_origins = [
-    "http://localhost:3000"
+allow_origins = [
+    "https://golfnvibes.com",
+    "https://www.golfnvibes.com",
 ]
 
 app.add_middleware(

@@ -9,3 +9,5 @@ fastapi-mail
 asyncpg
 pwdlib[argon2]
 jwt
+uvicorn
+alembic

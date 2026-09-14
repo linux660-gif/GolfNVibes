@@ -7,7 +7,7 @@ interface CustomError {
 }
 
 const api = axios.create({
-  baseURL: "http://localhost/api/v1/",
+  baseURL: "https://api.golfnvibes.com/api/v1/",
   timeout: 10000,
 });
 

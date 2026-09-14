@@ -58,8 +58,10 @@ class EmailService:
             return False
 
     async def send_welcome_email(self, email_to: EmailStr) -> bool:
+         username = email_to.split("@")[0]
         template_data: dict[str, list[str]] = {
-            "name": email_to.split(),
+            "name":username
+            
         }
 
         message = MessageSchema(

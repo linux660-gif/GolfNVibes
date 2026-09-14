@@ -22,7 +22,7 @@ RUN --mount=type=cache,target=/root/.npm npm install serve@^14.2.6 --omit=dev
 
 USER node
 
-EXPOSE 5173 
+EXPOSE 3000
 
 CMD ["npx", "serve", "-s", "dist", "-l", "3000"]
 

@@ -1,5 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
+    app_env:str
+    debug:bool
     postgres_password:str
     postgres_db:str
     postgres_user:str
