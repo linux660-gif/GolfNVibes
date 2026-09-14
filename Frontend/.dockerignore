@@ -3,6 +3,7 @@ node_modules
 .gitignore
 .idea
 build
+
 dist
 Dockerfile
 .dockerignore
