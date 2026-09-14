@@ -7,7 +7,7 @@ interface CustomError {
 }
 
 const api = axios.create({
-  baseURL: "https://api.golfnvibes.com/api/v1/",
+  baseURL: "https://api.nusytech.co.ke/api/v1/",
   timeout: 10000,
 });
 
