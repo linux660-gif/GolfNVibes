@@ -1,8 +1,8 @@
 import datetime
-from fastapi import APIRouter, HTTPException, Request, status, Query,Depends
+from fastapi import APIRouter, HTTPException, Request, status, Query
 from sqlalchemy import select, delete
 import logging
-from typing import Dict,Annotated
+from typing import Dict
 
 from app.db.database import get_db
 from app.schemas.trip_schema import (
@@ -26,7 +26,7 @@ bookingref = BookingReference()
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-@limiter.limit("3/hour")
+@limiter.limit("10/hour")
 async def add_custom_trip(request: Request, trip: PlanTrip) -> Dict[str, str]:
     async with get_db() as db:
 
