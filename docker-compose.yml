@@ -1,7 +1,7 @@
 services:
   database:
     image: postgres:14.23-trixie
-    container_name: golfnvibestest_db
+    container_name: golfnvibes_db
     env_file:
       - ./Backend/.env
     ports:
