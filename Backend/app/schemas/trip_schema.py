@@ -1,11 +1,10 @@
 from datetime import datetime, date
 from typing import List
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class TripService(BaseModel):
-    destination: str
     date: date
 
 class TripResponse(TripService):
@@ -14,25 +13,26 @@ class TripResponse(TripService):
 class UpdateTrip(BaseModel):
     pass
 
-class PlanTrip(TripService):
-    first_name:str
-    last_name:str
-    email: EmailStr
-    phone_number: str
-    golfers: int
-    non_golfers: int
-    rounds: str
-    continent_id:int
-    destination_id:int
-    hotel_id: int
-    airport_transfers: bool
-    flights: bool
-    flexible_dates:bool
-    experiences:List[str]
-    other_destination:str
-    additional_specifications:str
-    budget: str
-    created_at: datetime
+class PlanTrip(BaseModel):
+    first_name:str = Field(min_length=2, max_length=100)
+    last_name:str = Field(min_length=2, max_length=100 )
+    email: EmailStr = Field(min_length=5, max_length=255 )
+    phone_number: str = Field(min_length=9, max_length=20)
+    golfers: int = Field(gt=0, default=1)
+    non_golfers: int = Field(gt=0, default=0)
+    rounds: int = Field(gt=0, default=1 )
+    continent_id:int | None = Field(gt=0, default=1)
+    destination_id:int | None = Field(gt=0, default=1 )
+    start_date: date
+    end_date: date
+    hotel_id: int = Field(gt=0)
+    airport_transfers: bool = Field(default=True)
+    flights: bool = Field(default=False )
+    flexible_dates:bool = Field(default=True)
+    experiences:List[str] = Field(default=[""])
+    other_destination:str | None = Field(default="")
+    additional_specifications:str|None = Field(default="" )
+    budget: str = Field(default="1,500-2,500" )
 
 
 class PlanTripResponse(PlanTrip):

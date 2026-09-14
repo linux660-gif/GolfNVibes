@@ -31,24 +31,6 @@ const GOLF_EVENTS: GolfEvent[] = [
     course: "Laguna Golf Phuket",
     spotsLeft: 0,
   },
-  {
-    id: "2",
-    title: "Weekend Match Play Challenge",
-    host: "Michael Foster",
-    avatar: "https://golfnvibes.com/uploads/media/images/galleryimage9.jpg",
-    dateTime: "January 12th, 2026 at 9:00 AM",
-    course: "Augusta National GC",
-    spotsLeft: 1,
-  },
-  {
-    id: "3",
-    title: "Casual Par-3 & Chill",
-    host: "Dries Vincent",
-    avatar: "https://golfnvibes.com/uploads/media/images/galleryimage7.jpg",
-    dateTime: "January 12th, 2026 at 2:00 PM",
-    course: "Topgolf & Short Course",
-    spotsLeft: 4,
-  },
 ];
 
 type ValuePiece = Date | null;
@@ -59,7 +41,7 @@ function AvailabilityBadge({ spotsLeft }: { spotsLeft: number }) {
     return (
       <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-red-600 bg-red-50 border border-red-200 px-3 py-1 rounded-full">
         <XCircleIcon className="w-3.5 h-3.5" />
-        Sold Out
+        No Spots Left
       </span>
     );
   }

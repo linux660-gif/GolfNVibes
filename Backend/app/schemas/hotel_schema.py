@@ -4,4 +4,4 @@ class Hotel(BaseModel):
     name:str
 
 class HotelResponse(Hotel):
-    pass
+    id:int

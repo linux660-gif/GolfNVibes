@@ -9,6 +9,8 @@ from app.db.database import get_db
 from app.schemas.continent_schema import Continent as ContinentSchema, ContinentResponse
 from app.models.destination import Continent as ContinentModel
 from app.main import limiter
+from app.auth import CurrentUser
+
 
 router = APIRouter(prefix="/api/v1/destination/continent", tags=["Continent"])
 logger = logging.getLogger(name=__name__)
@@ -16,7 +18,7 @@ logger = logging.getLogger(name=__name__)
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @limiter.limit("2/minute")
-async def add_continent(request: Request, ContinentSchema: ContinentSchema):
+async def add_continent(request: Request, ContinentSchema: ContinentSchema,current_user:CurrentUser):
     async with get_db() as db:
         result = await db.execute(
             select(ContinentModel).where(ContinentModel.name == ContinentSchema.name)

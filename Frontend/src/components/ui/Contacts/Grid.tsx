@@ -11,16 +11,16 @@ import { TbPhoneCall } from "react-icons/tb";
 import Contacts from "../../forms/ContactsForm";
 
 const INQUIRY_TYPES = [
-  { id: "general", label: "General Enquiries", icon: EnvelopeIcon },
+  { id: "general", label: "General Inquiries", icon: EnvelopeIcon },
   { id: "trip", label: "Plan My Trip", icon: GlobeAltIcon },
   { id: "partnerships", label: "Partnerships", icon: HandshakeIcon },
   { id: "media", label: "Media Enquiries", icon: VideoCameraIcon },
 ];
 
 const CONTACT_INFO = [
-  { label: "Email Us", contact: "support@golfnvibes.com", icon: MdEmail },
+  { label: "Email Us", contact: "admin@golfnvibes.com", icon: MdEmail },
   { label: "Call Us", contact: "0715845522", icon: TbPhoneCall },
-  { label: "Our Location", contact: "Nairobi, Thika", icon: MapIcon },
+  { label: "Our Location", contact: "Nairobi,Kenya", icon: MapIcon },
 ];
 
 export default function ContactGrid() {
@@ -94,7 +94,7 @@ export default function ContactGrid() {
           </div>
 
           <div className="lg:col-span-8 bg-gray-300 border border-zinc-800 p-5 sm:p-8 rounded-2xl transition-all duration-300 shadow-xl">
-           <Contacts inquiryType={selectedType} />
+            <Contacts topic={selectedType} />
           </div>
         </div>
       </div>

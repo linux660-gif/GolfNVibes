@@ -4,5 +4,5 @@ class Classification(BaseModel):
     name:str
 
 class ClassificationResponse(Classification):
-    pass
+    id:int
 

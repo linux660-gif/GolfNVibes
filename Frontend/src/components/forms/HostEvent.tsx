@@ -5,27 +5,45 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../../services/api";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
 
 export interface HostData {
   full_name: string;
   email: string;
   company:string;
-  category:string;
-  expected_guest:string;
+  classification_id:string;
+  guest_id:string;
   vision:string;
+}
+export interface Classification {
+  id:string;
+  name:string;
+}
+
+export interface Guests {
+  id: string;
+  name: string;
 }
 
 const schema = yup.object({
     full_name : yup.string().required("Full Name is a Required Field"),
     email : yup.string().email("Enter a Valid Email").required("Email is a required field"),
     company: yup.string().required("Company is a required field"),
-    category: yup.string().required("Classification is a required Field"),
-    expected_guest: yup.string().required("Guest is a required Field"),
+    classification_id: yup.string().required("Classification is a required Field"),
+    guest_id: yup.string().required("Guest is a required Field"),
     vision: yup.string().required("Vision is a required Field")
 })
 
 export default function HostEventForm() {
+  const [classifications, setClassifications] = useState<Classification[]>([])
+  const [guests, setGuests] = useState<Guests[]>([]);
+  const [guestsLoading, setGuestsLoading] = useState(true);
+
+    const [guestError, setGuestsError] = useState<
+      string | null
+    >(null);
+    const [classificationLoading, setClassificationLoading] = useState(true);
   const {
     register,
     handleSubmit,
@@ -37,8 +55,8 @@ export default function HostEventForm() {
       full_name: "",
       email: "",
       company: "",
-      category: "",
-      expected_guest: "",
+      classification_id: "",
+      guest_id: "",
       vision: "",
     },
   });
@@ -55,6 +73,50 @@ export default function HostEventForm() {
       console.error(`error submitting the form: ${error}`);
     }
   };
+
+  useEffect(() => {
+    let isMounted = true;
+    api
+      .get("/tournament/classification/")
+      .then((response) => {
+        if (!isMounted) return;
+        setClassifications(response.data);
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+        console.error(err)
+      })
+      .finally(() => {
+        if (isMounted) setClassificationLoading(false);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+
+   useEffect(() => {
+     let isMounted = true;
+     api
+       .get("/tournament/guest/")
+       .then((response) => {
+         if (!isMounted) return;
+         setGuests(response.data);
+         setGuestsError(null);
+       })
+       .catch((err) => {
+         if (!isMounted) return;
+         setGuestsError(
+           err.message || "Unable to load Guests right now.",
+         );
+       })
+       .finally(() => {
+         if (isMounted) setGuestsLoading(false);
+       });
+     return () => {
+       isMounted = false;
+     };
+   }, []);
 
   const errorclass = "mt-1.5 text-xs text-red-500";
 
@@ -116,7 +178,7 @@ export default function HostEventForm() {
                     Company / Org *
                   </label>
                   <input
-                  required
+                    required
                     type="text"
                     {...register("company")}
                     placeholder="e.g. Sterling Capital"
@@ -137,25 +199,29 @@ export default function HostEventForm() {
                     Classification *
                   </label>
                   <select
-                  required
-                    id="classification"
-                    {...register("category")}
-                    className="w-full rounded-lg px-3.5 py-2.5 text-xs bg-white text-black border border-zinc-800 focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37] transition duration-200 cursor-pointer"
-                  > 
-                    <option value={"Corporate Invitation"}>
-                      Corporate Invitational
+                    id="classification_id"
+                    disabled={classificationLoading}
+                    aria-invalid={errors.classification_id ? "true" : "false"}
+                    aria-describedby={
+                      errors.classification_id ? "classification_id-error" : undefined
+                    }
+                    {...register("classification_id")}
+                    className="w-full cursor-pointer rounded-lg border border-zinc-200 bg-white px-3.5 py-2.5 text-xs text-black transition duration-200 focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <option value="">
+                      {classificationLoading
+                        ? "Loading classifications..."
+                          : "Select classification"}
                     </option>
-                    <option value={"Private VIP Showcase"}>
-                      Private VIP Showcase
-                    </option>
-                    <option value={"Charity Gala"}>
-                      Charity Gala Tournament
-                    </option>
-                    <option value={"Executive"}>Executive Retreat</option>
+                    {classifications.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
                   </select>
-                  {errors.category && (
+                  {errors.classification_id && (
                     <p className={errorclass}>
-                      {errors.category.message}
+                      {errors.classification_id.message}
                     </p>
                   )}
                 </div>
@@ -167,17 +233,36 @@ export default function HostEventForm() {
                     Expected Guests *
                   </label>
                   <select
-                    id="guests"
-                    {...register("expected_guest")}
-                    className="w-full rounded-lg px-3.5 py-2.5 text-xs bg-white text-black border border-zinc-800 focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37] transition duration-200 cursor-pointer"
+                    id="guest_id"
+                    disabled={classificationLoading}
+                    aria-invalid={errors.guest_id? "true" : "false"}
+                    aria-describedby={
+                      errors.guest_id ? "guest_id-error" : undefined
+                    }
+                    {...register("guest_id")}
+                    className="w-full cursor-pointer rounded-lg border border-zinc-200 bg-white px-3.5 py-2.5 text-xs text-black transition duration-200 focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37] disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    <option value={"12-36 VIP"}>12 - 36 VIPs</option>
-                    <option value={"36-72 Players"}>36 - 72 Players</option>
-                    <option value={"72-144 Players"}>72 - 144 Players</option>
-                    <option value={"144+ Full Buyout"}>144+ Full Buyout</option>
+                    <option value="">
+                      {guestsLoading
+                        ? "Loading clubs..."
+                          : "Select Guest"}
+                    </option>
+                    {guests.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
                   </select>
-                  {errors.expected_guest&& (
-                    <p className={errorclass}>{errors.expected_guest.message}</p>
+                  {guestError && (
+                    <p role="alert" className={errorclass}>
+                      {guestError} Please refresh the page to try
+                      again.
+                    </p>
+                  )}
+                  {errors.guest_id && (
+                    <p className={errorclass}>
+                      {errors.guest_id.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -187,7 +272,7 @@ export default function HostEventForm() {
                   Specific Vision *
                 </label>
                 <textarea
-                required
+                  required
                   rows={3}
                   {...register("vision")}
                   placeholder="Mention preferred dates, target destinations, or custom hospitality requests..."

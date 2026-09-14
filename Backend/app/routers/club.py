@@ -11,6 +11,7 @@ from app.clients.email_client.email_service import EmailService
 from app.schemas.club_schema import ClubCreate as ClubSchema, ClubResponse
 from app.models.member import Club as ClubModel
 from app.main import limiter
+from app.auth import CurrentUser
 
 router = APIRouter(prefix="/api/v1/member/club", tags=["Club"])
 logger = logging.getLogger(name=__name__)
@@ -19,7 +20,7 @@ email_service = EmailService()
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @limiter.limit("2/minute")
-async def add_club(request: Request, clubSchema: ClubSchema):
+async def add_club(request: Request, clubSchema: ClubSchema,current_user:CurrentUser):
     async with get_db() as db:
         result = await db.execute(
             select(ClubModel).where(ClubModel.name == clubSchema.name)

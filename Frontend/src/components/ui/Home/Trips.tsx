@@ -4,31 +4,29 @@ import { Suspense, useEffect, useRef, useState } from "react";
 const TRIPS = [
   {
     id: "trip-1",
-    title: "Vipingo Weekender",
+    title: "Kipipiri Golf Weekend",
     description:
       "Spend your mornings hacking it out on Gary Player’s coastal links and your nights exploring the vibrant, neon-lit souks and luxury rooftop lounges of Morocco.",
     location: "El Jadida & Marrakech, Morocco",
-    rating: 4.8,
     posterURL: "https://golfnvibes.com/uploads/media/images/trip1.JPG",
     videoUrl: "https://golfnvibes.com/uploads/media/videos/intt(1).mp4",
     webmformat: "https://golfnvibes.com/uploads/media/videos/intt(1).webm",
-    reviews: 129,
   },
   {
     id: "trip-2",
-    title: "⁠Antalya Golf Escape",
+    title: "⁠Limuru Cowboys Special",
     description:
       "Championship-grade golf tucked away in the lush Hua Hin foothills, rounded out with private villa pool parties, street food safaris, and ultimate tropical relaxation.",
     location: "Hua Hin, Thailand",
     rating: 4.9,
     posterURL: "https://golfnvibes.com/uploads/media/images/trip2.JPG",
-    videoUrl: "https://golfnvibes.com/uploads/media/videos/GOLFC.mp4",
-    webmformat: "https://golfnvibes.com/uploads/media/videos/GOLFC.webm",
+    videoUrl: "https://golfnvibes.com/uploads/media/videos/limurucowboy.mp4",
+    webmformat: "https://golfnvibes.com/uploads/media/videos/limurucowboy.webm",
     reviews: 378,
   },
   {
     id: "trip-3",
-    title: "⁠The Arusha Golf Safari",
+    title: "⁠Naivasha Weekender",
     description:
       "Tee off on East Africa’s only PGA-accredited course alongside wild roaming zebras, then head down to a private Indian Ocean beach club for fresh seafood and sunset DJ sets.",
     location: "Vipingo Ridge, Kenya",

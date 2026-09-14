@@ -2,21 +2,20 @@ import { lazy, Suspense } from "react";
 import EventHero from "../components/ui/Events&Tournaments/Hero";
 import { LineWave } from "react-loader-spinner";
 
-const EventFeature = lazy(
-  () => import("../components/ui/Events&Tournaments/Feature"),
-);
+//const EventFeature = lazy( () => import("../components/ui/Events&Tournaments/Feature"),);
 const PastEvents = lazy(
   () => import("../components/ui/Events&Tournaments/PastEvents"),
 );
 const EventCalendar = lazy(
   () => import("../components/ui/Events&Tournaments/Calendar"),
 );
-const TournamentResults = lazy(
-  () => import("../components/ui/Events&Tournaments/TournamentResults"),
-);
+// const TournamentResults = lazy(
+//   () => import("../components/ui/Events&Tournaments/TournamentResults"),
+// );
 const HostEvent = lazy(
   () => import("../components/ui/Events&Tournaments/Host"),
 );
+const GolfTours = lazy( () => import("../components/ui/Events&Tournaments/PastGolfTours"))
 
 function SectionFallback({ minHeight = "min-h-96" }: { minHeight?: string }) {
   return (
@@ -44,12 +43,16 @@ export default function Tournaments() {
     <main className="bg-white min-h-screen">
       <EventHero />
 
-      <Suspense fallback={<SectionFallback />}>
+      {/* <Suspense fallback={<SectionFallback />}>
         <EventFeature />
-      </Suspense>
+      </Suspense> */}
 
       <Suspense fallback={<SectionFallback minHeight="min-h-125" />}>
         <PastEvents />
+      </Suspense>
+
+      <Suspense fallback={<SectionFallback />}>
+        <GolfTours />
       </Suspense>
 
       <Suspense fallback={<SectionFallback minHeight="min-h-150" />}>
@@ -58,9 +61,9 @@ export default function Tournaments() {
         </div>
       </Suspense>
 
-      <Suspense fallback={<SectionFallback minHeight="min-h-96" />}>
+      {/* <Suspense fallback={<SectionFallback minHeight="min-h-96" />}>
         <TournamentResults />
-      </Suspense>
+      </Suspense> */}
 
       <Suspense fallback={<SectionFallback minHeight="min-h-125" />}>
         <HostEvent />

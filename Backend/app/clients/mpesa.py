@@ -42,7 +42,21 @@ class MpesaClient:
                 detail="Unable to connect to Mpesa.",
             )
 
-    async def initiate_stk_push(self, payload: dict[str, str]):
+    async def initiate_stk_push(self, phone_number: str, amount: float|int):
+        payload = {
+            "BusinessShortCode": settings.mpesa_business_shortcode,
+            "Password": settings.mpesa_password_hash,
+            "CallBackURL":settings.mpesa_callback_url,
+            "PhoneNumber": phone_number,
+            "Amount": amount,
+            "TransactionType": settings.mpesa_transaction_type,
+            "Timestamp": settings.mpesa_transaction_date,
+            "PartyA":settings.mpesa_party_a,
+            "PartyB":settings.mpesa_party_b,
+            "AccountReference":settings.mpesa_account_reference,
+            "TransactionDesc": settings.mpesa_transaction_desc,
+
+        }
 
         async with httpx.AsyncClient(timeout=self.timeout) as client:
 
@@ -58,12 +72,16 @@ class MpesaClient:
 
                 response.raise_for_status()
 
-                return response.json()
+                result = response.json()
+                if result["ResponseCode"] != 0:
+                    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Error Initiating STK Push")
+
+                return result["CheckoutRequestId"]
 
             except httpx.HTTPStatusError as e:
                 raise HTTPException(
                     status_code=status.HTTP_502_BAD_GATEWAY,
-                    detail=f"STK Push failed: {e.response.text}",
+                    detail=f"STK Push failed",
                 )
 
             except httpx.RequestError:

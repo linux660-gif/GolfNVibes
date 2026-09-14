@@ -19,25 +19,6 @@ class PayPalOrderPayload(BaseModel):
 class PayPalCaptureOrder(PaymentCreate):
     order_id: str
 
-class MpesaCreatePayment(PaymentCreate):
-    pass
-
-class MpesaStkPush(PaymentCreate):
-    phone_number: str
-    amount : int
-
-class MpesaPayload(BaseModel):
-    BusinessShortCode:str
-    Password:str
-    Timestamp:str
-    TransactionType:str
-    Amount:str
-    PartyA:str
-    PartyB:str
-    PhoneNumber:str
-    CallBackURL:str
-    AccountReference:str
-    TransactionDesc:str
 
 class PaypalPayload(BaseModel):
     intent:str

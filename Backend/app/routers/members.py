@@ -1,3 +1,4 @@
+from app.auth import CurrentUser
 from fastapi import APIRouter, HTTPException, status, Request
 from sqlalchemy import delete, select
 import logging
@@ -9,6 +10,7 @@ from app.clients.email_client.email_service import EmailService
 from app.schemas.member_schema import MemberCreate as MemberCreateSchema,MemberResponse
 from app.models.member import Members as MembersModel, Club as ClubModel
 from app.main import limiter
+from app.auth import CurrentUser
 
 router = APIRouter(prefix="/api/v1/member", tags=["Member"])
 logger = logging.getLogger(name=__name__)
@@ -35,7 +37,7 @@ async def create_member(request: Request, member: MemberCreateSchema):
                 full_name=member.full_name,
                 email=member.email,
                 handicap=member.handicap,
-                club=member.club_id,
+                club_id=member.club_id,
                 vision=member.vision,
             )
             try:
@@ -69,7 +71,7 @@ async def create_member(request: Request, member: MemberCreateSchema):
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[MemberResponse])
 @limiter.limit("5/minute")
-async def get_members(request: Request):
+async def get_members(request: Request, current_user:CurrentUser):
     async with get_db() as db:
         query = select(MembersModel)
 
@@ -86,7 +88,7 @@ async def get_members(request: Request):
 
 @router.delete("/{member_id}")
 @limiter.limit("5/minute")
-async def delete_member_by_id(request:Request,member_id: int):
+async def delete_member_by_id(request:Request,member_id: int,current_user:CurrentUser):
     async with get_db() as db:
         result = await db.execute(
             select(MembersModel).where(MembersModel.id == member_id)

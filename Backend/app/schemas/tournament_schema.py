@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from sqlalchemy.orm import Mapped
 
 
 class TournamentBase(BaseModel):
@@ -17,12 +18,24 @@ class TournamentResponse(TournamentBase):
     pass
 
 
-class TournamentHost(TournamentBase):
+class TournamentHost(BaseModel):
     full_name:str
     email: EmailStr
     company:str
-    classification_id:str
-    guest_id:str
+    classification_id:int
+    guest_id:int
     vision:str
+
+class TournamentBook(BaseModel):
+    full_name:str
+    email:EmailStr
+    phone_number:str
+    checkout_id:str
+    amount:float
+    payment_method_id:int
+    status:str
+    tournament_reference:str
+
+
 
 

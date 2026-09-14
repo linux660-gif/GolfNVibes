@@ -1,23 +1,199 @@
- <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-    <meta charset="UTF-8">
-    <title>Custom Travel Confirmation</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>Your Custom Trip Request Is Confirmed</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+  <style>
+    body, table, td { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { margin: 0; padding: 0; width: 100% !important; background-color: #f4f4f5; }
+    table { border-collapse: collapse; }
+    img { border: 0; display: block; }
+    a { text-decoration: none; }
+
+    @media only screen and (max-width: 600px) {
+      .email-container { width: 100% !important; }
+      .stack-padding { padding-left: 24px !important; padding-right: 24px !important; }
+      .mobile-heading { font-size: 22px !important; line-height: 28px !important; }
+    }
+  </style>
 </head>
-<body>
-    <h1>Hey there, {{ name }}</h1>
-    <h4>Reference Number: {{ reference_number }}</h4>
-    <p>
-        We are pleased to inform you that your custom travel to {{ destination }} has been received. Get ready 
-        to some unforgettable memories. We've made things easier for you, our team is working on your request
-        and will contact you within 48 hours
-    </p>
-    <br>
-    <p>
-        If you'd like to get in touch with customer care team, please reach out to us at support@golfnvibes.com.
-        With {{ reference_number }} for follow up.
-        <span> Cant wait to see you  </span>
-    </p>
+<body style="margin:0; padding:0; background-color:#f4f4f5;">
+  <div style="display:none; max-height:0; overflow:hidden; opacity:0; mso-hide:all;">
+    We've received your custom trip request to {{ destination }} — reference #{{ reference_number }}. Our team will be in touch within 48 hours.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f5;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+
+        <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" style="width:600px; max-width:600px; background-color:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.06);">
+          <tr>
+            <td style="background-color:#0a4d30; padding:28px 32px; text-align:center;">
+              <img
+                src="https://golfnvibes.com/uploads/media/images/logo.png"
+                alt="Golf N Vibes"
+                width="48"
+                height="48"
+                style="border-radius:50%; margin:0 auto 10px auto;"
+              />
+              <p style="margin:0; font-size:18px; font-weight:700; color:#ffffff; letter-spacing:0.05em;">
+                GOLF <span style="color:#bd982e;">N</span> VIBES
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="padding:32px 32px 0 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#eef4f0; border-radius:999px; padding:6px 16px;">
+                    <span style="font-size:11px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#0a4d30;">
+                      Trip Request Confirmed
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td class="stack-padding" style="padding:20px 32px 8px 32px;">
+              <h1 class="mobile-heading" style="margin:0 0 16px 0; font-size:26px; line-height:32px; font-weight:700; color:#111111;">
+                Thank you, {{ name }}!
+              </h1>
+              <p style="margin:0 0 16px 0; font-size:15px; line-height:24px; color:#3f3f46;">
+                We're pleased to confirm that your custom golf trip request to
+                <strong style="color:#111111;">{{ destination }}</strong> has been received.
+                Get ready for some unforgettable memories — our team is already reviewing
+                your preferences and will be in touch within <strong>48 hours</strong> to
+                begin curating your itinerary.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="stack-padding" style="padding:8px 32px 8px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e4e4e7; border-radius:12px;">
+                <tr>
+                  <td style="padding:20px 24px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="padding-bottom:12px; border-bottom:1px solid #f0f0f1;">
+                          <p style="margin:0; font-size:10px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#bd982e;">
+                            Reference Number
+                          </p>
+                          <p style="margin:4px 0 0 0; font-size:16px; font-weight:700; color:#111111;">
+                            {{ reference_number }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding-top:12px;">
+                          <p style="margin:0; font-size:10px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#bd982e;">
+                            Destination
+                          </p>
+                          <p style="margin:4px 0 0 0; font-size:16px; font-weight:700; color:#111111;">
+                            {{ destination }}
+                          </p>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td style="padding-top:12px;">
+                          <p style="margin:0; font-size:10px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#bd982e;">
+                            Travel Dates
+                          </p>
+                          <p style="margin:4px 0 0 0; font-size:16px; font-weight:700; color:#111111;">
+                            {{ start_date }} &ndash; {{ end_date }}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td class="stack-padding" style="padding:20px 32px 8px 32px;">
+              <p style="margin:0 0 16px 0; font-size:15px; line-height:24px; color:#3f3f46;">
+                Every request is reviewed personally by our travel team — no
+                automated itineraries here. If anything changes on your end in
+                the meantime, just reply to this email or reach out directly.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="center" style="padding:8px 32px 32px 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="border-radius:999px; background-color:#0a4d30;">
+                    <a
+                    href="https://golfnvibes.com/ContactUs"
+                      style="display:inline-block; padding:14px 32px; font-size:13px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#ffffff;"
+                    >
+                      Contact Our Team
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="stack-padding" style="padding:0 32px 32px 32px; border-top:1px solid #f0f0f1;">
+              <p style="margin:20px 0 0 0; font-size:13px; line-height:20px; color:#71717a;">
+                Need to speak with someone sooner? Email our customer care
+                team at
+                <a href="mailto:admin@golfnvibes.com" style="color:#0a4d30; font-weight:600;">admin@golfnvibes.com</a>
+                and quote reference <strong>{{ reference_number }}</strong> so we can pull up your request right away.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="stack-padding" style="padding:0 32px 32px 32px;">
+              <p style="margin:0; font-size:14px; line-height:22px; color:#3f3f46;">
+                Warmly,<br />
+                <strong style="color:#111111;">The Golf N Vibes Team</strong>
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="background-color:#f4f4f5; padding:24px 32px; text-align:center;">
+              <p style="margin:0 0 6px 0; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#111111;">
+                GOLF N VIBES
+              </p>
+               <p style="margin:0 0 10px 0; font-size:9px; line-height:18px; color:#a1a1aa;">
+                <strong>PLAY<span>.</span> TRAVEL <span>.</span> CONNECT</strong>
+              </p>
+              <p style="margin:0 0 10px 0; font-size:11px; line-height:18px; color:#a1a1aa;">
+                It's not just golf. It's a lifestyle.
+              </p>
+              <p style="margin:0; font-size:11px; line-height:18px; color:#a1a1aa;">
+                
+                You're receiving this email because a custom trip request was
+                submitted by {{ email_to }} at
+                <a href="https://golfnvibes.com" style="color:#a1a1aa; text-decoration:underline;">golfnvibes.com</a>.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
 
 </body>
 </html>

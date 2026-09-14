@@ -1,8 +1,8 @@
 import datetime
-from fastapi import APIRouter, HTTPException, Request, status, Query
+from fastapi import APIRouter, HTTPException, Request, status, Query,Depends
 from sqlalchemy import select, delete
 import logging
-from typing import Dict
+from typing import Dict,Annotated
 
 from app.db.database import get_db
 from app.schemas.trip_schema import (
@@ -15,14 +15,18 @@ from app.models.destination import Continent, Destination
 from app.models.trip import CustomTrip as TripModel
 from app.clients.email_client.email_service import EmailService
 from app.main import limiter
+from app.clients.booking_references import BookingReference
+from app.auth import CurrentUser
+
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/trip", tags=["Trip"])
 email_service = EmailService()
+bookingref = BookingReference()
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-@limiter.limit("2/minute")
+@limiter.limit("3/hour")
 async def add_custom_trip(request: Request, trip: PlanTrip) -> Dict[str, str]:
     async with get_db() as db:
 
@@ -37,7 +41,8 @@ async def add_custom_trip(request: Request, trip: PlanTrip) -> Dict[str, str]:
             logger.warning("Trip already exists")
 
             raise HTTPException(
-                status_code=409, detail="Failed to Create: Trip already exists"
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Failed to Create: Trip already exists",
             )
         result = await db.execute(
             select(HotelCategory).where(HotelCategory.id == trip.hotel_id)
@@ -46,7 +51,7 @@ async def add_custom_trip(request: Request, trip: PlanTrip) -> Dict[str, str]:
 
         if not hotel_record:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Invalid Hotel Id"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid Hotel Id"
             )
 
         result = await db.execute(
@@ -55,17 +60,17 @@ async def add_custom_trip(request: Request, trip: PlanTrip) -> Dict[str, str]:
         destinantion_record = result.scalar_one_or_none()
         if not destinantion_record:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Invalid Destinantion Id"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid Destination Id"
             )
         result = await db.execute(
             select(Continent).where(Continent.id == trip.continent_id)
         )
-        destinantion_record = result.scalar_one_or_none()
-        if not destinantion_record:
+        continent_record = result.scalar_one_or_none()
+        if not continent_record:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Invalid Continent Id"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid Continent Id"
             )
-
+        reference_number = bookingref.custom_trip_references()
         new_trip = TripModel(
             first_name=trip.first_name,
             last_name=trip.last_name,
@@ -78,13 +83,15 @@ async def add_custom_trip(request: Request, trip: PlanTrip) -> Dict[str, str]:
             experiences=trip.experiences,
             additional_specifications=trip.additional_specifications,
             airport_transfers=trip.airport_transfers,
-            date=trip.date,
+            start_date=trip.start_date,
+            end_date=trip.end_date,
             hotel_id=trip.hotel_id,
             flights=trip.flights,
             destination_id=trip.destination_id,
             other_destination=trip.other_destination,
             continent_id=trip.continent_id,
             flexible_dates=trip.flexible_dates,
+            reference_number=reference_number,
             created_at=datetime.datetime.now(datetime.timezone.utc),
         )
 
@@ -103,9 +110,13 @@ async def add_custom_trip(request: Request, trip: PlanTrip) -> Dict[str, str]:
                 detail="Internal Server Error",
             )
         try:
+            destination = destinantion_record.name
             await email_service.send_plan_trip_confirmation(
+                start_date=trip.start_date,
+                end_date=trip.end_date,
+                reference=reference_number,
                 email_to=trip.email,
-                destination=trip.destination,
+                destination=destination,
                 first_name=trip.first_name,
                 second_name=trip.last_name,
             )
@@ -116,14 +127,16 @@ async def add_custom_trip(request: Request, trip: PlanTrip) -> Dict[str, str]:
 
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=list[PlanTripResponse])
-@limiter.limit("2/minute")
+@limiter.limit("4/hour")
 async def get_custom_trips(
     request: Request,
+    current_user:CurrentUser, 
     email: str | None = Query(default=None),
     phone: str | None = Query(default=None),
     trip_id: int | None = Query(default=None),
     limit: int = Query(default=10, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
+  
 ):
     async with get_db() as db:
 
@@ -153,7 +166,7 @@ async def get_custom_trips(
 
 @router.patch("/{trip_id}", status_code=status.HTTP_200_OK)
 @limiter.limit("2/minute")
-async def update_trip(request: Request, trip_id: int, trip: PlanTripUpdateSchema):
+async def update_trip(request: Request, trip_id: int, trip: PlanTripUpdateSchema,current_user:CurrentUser):
     async with get_db() as db:
         result = await db.execute(select(TripModel).where(TripModel.trip_id == trip_id))
         available_trip = result.scalars().first()
@@ -202,7 +215,7 @@ async def update_trip(request: Request, trip_id: int, trip: PlanTripUpdateSchema
 
 @router.delete("/{trip_id}", status_code=status.HTTP_200_OK)
 @limiter.limit("2/minute")
-async def delete_trip(request: Request, trip_id: int):
+async def delete_trip(request: Request, trip_id: int, current_user:CurrentUser):
     async with get_db() as db:
         result = await db.execute(select(TripModel).where(TripModel.trip_id == trip_id))
         trip = result.scalars().first()
@@ -227,7 +240,7 @@ async def delete_trip(request: Request, trip_id: int):
 
 @router.delete("/", status_code=status.HTTP_200_OK)
 @limiter.limit("2/minute")
-async def delete_trips(request: Request):
+async def delete_trips(request: Request,current_user:CurrentUser):
     async with get_db() as db:
         try:
             await db.execute(delete(TripModel))

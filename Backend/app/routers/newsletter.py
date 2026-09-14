@@ -7,6 +7,7 @@ from app.models.newsletter import NewsLetter as NewsLetterModel
 from app.schemas.newletter_schema import NewsLetterCreate, NewsLetterUpdate
 from app.clients.email_client.email_service import EmailService
 from app.main import limiter
+from app.auth import CurrentUser
 
 
 
@@ -46,7 +47,7 @@ async def add_subscriber(request:Request,user:NewsLetterCreate):
 
 @router.delete("/{email_id}", tags=['Newsletter'],status_code=status.HTTP_200_OK, response_model=None)
 @limiter.limit("5/minute")
-async def delete_subscriber(request:Request,email_id:int):
+async def delete_subscriber(request:Request,email_id:int, current_user:CurrentUser):
     async with get_db() as db:
         result = await db.execute(select(NewsLetterModel).where(NewsLetterModel.id == email_id))
         existing_subscriber = result.scalars().first()
@@ -59,7 +60,7 @@ async def delete_subscriber(request:Request,email_id:int):
 
 @router.put('/{email_id}', tags=['Newsletter'], response_model=None)
 @limiter.limit("5/minute")
-async def update_subscriber(request:Request,email_id: int, subscriber:NewsLetterUpdate):
+async def update_subscriber(request:Request,email_id: int, subscriber:NewsLetterUpdate, current_user:CurrentUser):
     async with get_db() as db:
         result = await db.execute(select(NewsLetterModel).where(NewsLetterModel.id == email_id))
         existing_subscriber = result.scalars().first()
@@ -73,7 +74,7 @@ async def update_subscriber(request:Request,email_id: int, subscriber:NewsLetter
 
 @router.get('/', tags=['Newsletter'], response_model=None)
 @limiter.limit("5/minute")
-async def get_subscribers(request:Request):
+async def get_subscribers(request:Request, current_user:CurrentUser):
     async with get_db() as db:
         result = await db.execute(select(NewsLetterModel))
         existing_subscribers = result.scalars().all()

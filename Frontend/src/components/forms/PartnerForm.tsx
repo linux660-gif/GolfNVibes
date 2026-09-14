@@ -1,5 +1,5 @@
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../services/api";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -8,14 +8,19 @@ import { toast } from "react-toastify";
 
 export interface PartnerData {
   organization: string;
-  partner_type: string;
+  partner_type_id: string;
   email: string;
   details: string;
 }
 
+export interface PartnerType{
+  id:string;
+  name:string;
+}
+
 const schema = yup.object({
   organization: yup.string().required("Please enter your organization name"),
-  partner_type: yup.string().required("Please select a partnership type"),
+  partner_type_id: yup.string().required("Please select a partnership type"),
   email: yup
     .string()
     .email("Invalid email address")
@@ -30,7 +35,8 @@ const inputClass =
   "w-full rounded-lg px-3.5 py-2.5 text-xs sm:text-sm bg-white text-black placeholder-zinc-500 border border-zinc-200 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition duration-200";
 
 export default function BecomeAPartnerForm(): React.ReactElement {
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [partnerTypes, setPartnerTypes] = useState<PartnerType[]>([])
+  const [partnerTypeLoading, setPartnerTypeLoading] = useState<boolean>(true)
 
   const {
     register,
@@ -41,24 +47,40 @@ export default function BecomeAPartnerForm(): React.ReactElement {
     resolver: yupResolver(schema),
     defaultValues: {
       organization: "",
-      partner_type: "",
+      partner_type_id: "",
       email: "",
       details: "",
     },
   });
 
   const onSubmit = async (data: PartnerData) => {
-    setSubmitError(null);
-    try {
       await toast.promise(api.post("/partner/", data), {
         pending: "Submitting your request...",
         success: "Partner request successfully submitted",
+        error: "Something went wrong. Please try again"
       });
       reset();
-    } catch (error) {
-      console.error(`Something went wrong. Please try again ${error}.`);
-    }
   };
+
+   useEffect(() => {
+     let isMounted = true;
+     api
+       .get("/partner/category/")
+       .then((response) => {
+         if (!isMounted) return;
+         setPartnerTypes(response.data);
+       })
+       .catch((err) => {
+         if (!isMounted) return;
+         console.error(err)
+       })
+       .finally(() => {
+         if (isMounted) setPartnerTypeLoading(false);
+       });
+     return () => {
+       isMounted = false;
+     };
+   }, []);
 
   return (
     <form
@@ -104,23 +126,28 @@ export default function BecomeAPartnerForm(): React.ReactElement {
           </label>
           <select
             id="partner_type"
-            aria-invalid={errors.partner_type ? "true" : "false"}
+            disabled={partnerTypeLoading}
+            aria-invalid={errors.partner_type_id ? "true" : "false"}
             aria-describedby={
-              errors.partner_type ? "partner_type-error" : undefined
+              errors.partner_type_id ? "partner_type_id-error" : undefined
             }
-            {...register("partner_type")}
+            {...register("partner_type_id")}
             className={`${inputClass} cursor-pointer`}
           >
-            <option value="">Select Option</option>
-            <option value="Sponsor">Sponsor</option>
-            <option value="Hotel & Resort">Hotel & Resort</option>
-            <option value="Golf Club">Golf Club</option>
-            <option value="Tourism Board">Tours & Travel Agencies</option>
-            <option value="Airline / Transport">Airline / Transport</option>
+            <option value="">
+              {partnerTypeLoading
+                ? "Loading partner types..."
+                  : "Select Partner Type"}
+            </option>
+            {partnerTypes.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
           </select>
-          {errors.partner_type && (
+          {errors.partner_type_id && (
             <p id="partner_type-error" role="alert" className={errorClass}>
-              {errors.partner_type.message}
+              {errors.partner_type_id.message}
             </p>
           )}
         </div>
@@ -165,12 +192,6 @@ export default function BecomeAPartnerForm(): React.ReactElement {
           </p>
         )}
       </div>
-
-      {submitError && (
-        <p role="alert" className="text-center text-xs text-red-500">
-          {submitError}
-        </p>
-      )}
 
       <div className="pt-2">
         <button

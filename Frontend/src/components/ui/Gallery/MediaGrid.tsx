@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import {
-  MagnifyingGlassPlusIcon,
-  MapPinIcon,
   XMarkIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -10,145 +8,154 @@ import {
 
 export interface GalleryItem {
   id: string;
-  category: "holidays" | "tournaments" | "community" | "corporate";
-  title: string;
-  location: string;
+  category: "holidays" | "tournaments";
+  description: string;
+
   image: string;
 }
 
 const CATEGORY_LABELS: Record<GalleryItem["category"], string> = {
   holidays: "Golf Holidays",
   tournaments: "Tournaments",
-  community: "Community",
-  corporate: "Corporate Events",
 };
 
 const GALLERY_ITEMS: GalleryItem[] = [
   {
     id: "1",
     category: "holidays",
-    title: "Moroccan Oasis Luxury Escape",
-    location: "Mazagan, Morocco",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage1.JPG",
+    description:
+      "An exclusive getaway featuring world-class golfing, luxury accommodations, and stunning desert landscapes.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/holidays/holidays1.jpeg",
   },
   {
     id: "2",
     category: "tournaments",
-    title: "Sunset Scramble Championship",
-    location: "Vipingo Ridge, Kenya",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage2.JPG",
+    description:
+      "A competitive late-afternoon tournament offering pristine fairway play as the sun sets over the course.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments1.jpeg",
   },
   {
     id: "3",
-    category: "community",
-    title: "Post-Round Sundowner & Vibes",
-    location: "Arusha, Tanzania",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage3.JPG",
+    category: "holidays",
+    description:
+      "Relax after 18 holes with premium drinks, live music, and unbeatable sunset views by the clubhouse.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/holidays/holidays3.jpeg",
   },
   {
     id: "4",
-    category: "corporate",
-    title: "Executive Golf Invitational",
-    location: "Nairobi, Kenya",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage20.JPG",
+    category: "tournaments",
+    description:
+      "A prestigious gathering of top-tier golfers competing for corporate honors across 18 championship holes.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments14.jpeg",
   },
   {
     id: "5",
     category: "holidays",
-    title: "Coastal Fairways Retreat",
-    location: "Mombasa, Kenya",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage5.JPG",
+    description:
+      "Unwind at a seaside resort combining refreshing ocean breezes with oceanfront golf courses.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/holidays/holidays6.jpeg",
   },
   {
     id: "6",
     category: "tournaments",
-    title: "VIP Match Play Finals",
-    location: "Augusta, USA",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage19.JPG",
+    description:
+      "High-stakes head-to-head competition bringing together elite players to crown the ultimate champion.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments4.jpeg",
   },
   {
     id: "7",
     category: "holidays",
-    title: "Moroccan Oasis Luxury Escape",
-    location: "Mazagan, Morocco",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage7.JPG",
+    description:
+      "Immerse yourself in rich culture and pampering spa treatments alongside world-class golf fairways.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/holidays/holidays6.jpeg",
   },
   {
     id: "8",
     category: "tournaments",
-    title: "Sunset Scramble Championship",
-    location: "Vipingo Ridge, Kenya",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage8.JPG",
+    description:
+      "Fast-paced team scramble format designed for strategic play and evening celebration on the green.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments6.jpeg",
   },
   {
     id: "9",
-    category: "community",
-    title: "Post-Round Sundowner & Vibes",
-    location: "Arusha, Tanzania",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage9.JPG",
+    category: "holidays",
+    description:
+      "The ultimate post-game social atmosphere featuring great music, craft cocktails, and good company.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/holidays/holidays12.jpeg",
   },
   {
     id: "10",
-    category: "corporate",
-    title: "Executive Golf Invitational",
-    location: "Nairobi, Kenya",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage10.JPG",
+    category: "tournaments",
+    description:
+      "An invitation-only event tailored for business leaders, blending networking with high-end golf play.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments13.webp",
   },
   {
     id: "11",
     category: "holidays",
-    title: "Coastal Fairways Retreat",
-    location: "Mombasa, Kenya",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage11.JPG",
+    description:
+      "Escape to a tropical paradise featuring scenic coastal views and luxury golf villas.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments12.webp",
   },
   {
     id: "12",
     category: "tournaments",
-    title: "VIP Match Play Finals",
-    location: "Augusta, USA",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage12.JPG",
+    description:
+      "The final showdown of the season where top contenders fight for match play glory.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments25.jpeg",
   },
   {
     id: "13",
     category: "holidays",
-    title: "Moroccan Oasis Luxury Escape",
-    location: "Mazagan, Morocco",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage13.JPG",
+    description:
+      "Experience exotic hospitality, fine dining, and endless sunshine on premier resort courses.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments11.webp",
   },
   {
     id: "14",
     category: "tournaments",
-    title: "Sunset Scramble Championship",
-    location: "Vipingo Ridge, Kenya",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage14.JPG",
+    description:
+      "Golden hour golf at its finest, featuring fun team formats and post-match trophy presentations.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments29.jpeg",
   },
   {
     id: "15",
-    category: "community",
-    title: "Post-Round Sundowner & Vibes",
-    location: "Arusha, Tanzania",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage15.JPG",
+    category: "holidays",
+    description:
+      "Soak in the vibrant evening energy with poolside drinks and lounge vibes following a great round.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments5.jpeg",
   },
   {
     id: "16",
-    category: "corporate",
-    title: "Executive Golf Invitational",
-    location: "Nairobi, Kenya",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage16.JPG",
-  },
-  {
-    id: "17",
-    category: "holidays",
-    title: "Coastal Fairways Retreat",
-    location: "Mombasa, Kenya",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage17.JPG",
-  },
-  {
-    id: "18",
     category: "tournaments",
-    title: "VIP Match Play Finals",
-    location: "Augusta, USA",
-    image: "https://golfnvibes.com/uploads/media/images/GalleryImage18.JPG",
+    description:
+      "An elite showcase of skill and precision hosted on a challenging championship-grade course.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments2.jpeg",
+  },
+
+  {
+    id: "16",
+    category: "tournaments",
+    description:
+      "An elite showcase of skill and precision hosted on a challenging championship-grade course.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments21.jpeg",
   },
 ];
 
@@ -166,7 +173,7 @@ function EmptyState({ message }: { message: string }) {
 function GalleryCard({
   item,
   priority,
-  onOpen,
+  // onOpen,
 }: {
   item: GalleryItem;
   priority: boolean;
@@ -176,19 +183,19 @@ function GalleryCard({
     <div
       role="button"
       tabIndex={0}
-      onClick={() => onOpen(item)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onOpen(item);
-        }
-      }}
-      aria-label={`View ${item.title} in ${item.location}`}
+      // onClick={() => onOpen(item)}
+      // onKeyDown={(e) => {
+      //   if (e.key === "Enter" || e.key === " ") {
+      //     e.preventDefault();
+      //     onOpen(item);
+      //   }
+      // }}
+      aria-label={`View ${item.description}`}
       className="group relative mb-6 break-inside-avoid rounded-2xl overflow-hidden bg-white border border-zinc-200 hover:border-[#D4AF37] transition-colors duration-300 cursor-pointer shadow-sm hover:shadow-xl focus-visible:ring-2 focus-visible:ring-[#0a4d30] focus-visible:outline-none"
     >
       <img
         src={item.image}
-        alt={item.title}
+        alt={item.description}
         loading={priority ? "eager" : "lazy"}
         decoding="async"
         fetchPriority={priority ? "high" : "auto"}
@@ -196,23 +203,6 @@ function GalleryCard({
         height={600}
         className="w-full h-auto object-cover"
       />
-
-      <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 group-focus-visible:translate-y-0 transition-transform duration-300 ease-out bg-white/95 backdrop-blur-sm border-t border-[#D4AF37]/30 p-4">
-        <span className="text-[10px] uppercase font-semibold tracking-widest text-[#bd982e]">
-          {CATEGORY_LABELS[item.category]}
-        </span>
-        <h3 className="text-sm font-serif font-bold text-black mt-1 leading-snug">
-          {item.title}
-        </h3>
-        <div className="flex items-center gap-1.5 text-xs text-zinc-500 mt-1">
-          <MapPinIcon className="w-3.5 h-3.5 text-[#bd982e]" />
-          <span>{item.location}</span>
-        </div>
-      </div>
-
-      <div className="absolute top-3 right-3 p-2 rounded-full bg-white/90 text-[#0a4d30] opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-md">
-        <MagnifyingGlassPlusIcon className="w-4 h-4" />
-      </div>
     </div>
   );
 }
@@ -264,8 +254,8 @@ export default function MediaGrid({ activeTab }: { activeTab: string }) {
     <section className="py-12 px-4 sm:px-6 lg:px-12">
       <div className="max-w-7xl mx-auto">
         {activeTab === "videos" ? null : filteredItems.length === 0 ? (
-  <EmptyState message="No media found in this category yet." />
-        ): (
+          <EmptyState message="No media found in this category yet." />
+        ) : (
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-6">
             {filteredItems.map((item, idx) => (
               <GalleryCard
@@ -283,7 +273,6 @@ export default function MediaGrid({ activeTab }: { activeTab: string }) {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={lightboxImage.title}
           onClick={() => setLightboxIndex(null)}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md cursor-pointer"
         >
@@ -313,7 +302,7 @@ export default function MediaGrid({ activeTab }: { activeTab: string }) {
             </button>
             <img
               src={lightboxImage.image}
-              alt={lightboxImage.title}
+              alt={lightboxImage.description}
               loading="eager"
               decoding="async"
               className="w-full h-auto max-h-[75vh] object-contain"
@@ -322,12 +311,12 @@ export default function MediaGrid({ activeTab }: { activeTab: string }) {
               <span className="text-[10px] uppercase font-semibold tracking-widest text-[#bd982e]">
                 {CATEGORY_LABELS[lightboxImage.category]}
               </span>
-              <h3 className="text-lg font-serif font-bold text-black mt-1">
+              {/* <h3 className="text-lg font-serif font-bold text-black mt-1">
                 {lightboxImage.title}
               </h3>
               <p className="text-xs text-zinc-500 mt-1">
                 {lightboxImage.location}
-              </p>
+              </p> */}
               {filteredItems.length > 1 && (
                 <p className="text-[11px] text-zinc-400 mt-2">
                   {(lightboxIndex ?? 0) + 1} of {filteredItems.length}

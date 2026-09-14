@@ -4,12 +4,12 @@ import ClubHero from "../components/ui/Club/Hero";
 const MemberBenefits = lazy(
   () => import("../components/ui/Club/MemberBenefits"),
 );
-const UpcomingClubEvents = lazy(
-  () => import("../components/ui/Club/UpcomingEvents"),
-);
+// const UpcomingClubEvents = lazy(
+//   () => import("../components/ui/Club/UpcomingEvents"),
+// );
 const MemberOffers = lazy(() => import("../components/ui/Club/MemberOffers"));
 const Testimonials = lazy(() => import("../components/ui/Club/Testimonials"));
-const Membership = lazy(() => import("../components/ui/Club/Membership"));
+const Membership = lazy(() => import("../components/forms/ClubApplicationForm"));
 
 function SectionFallback({
   minHeight = "min-h-96",
@@ -36,20 +36,19 @@ export default function GolfNVibesClubPage() {
         <MemberBenefits />
       </Suspense>
 
-      <Suspense fallback={<SectionFallback minHeight="min-h-125" dark />}>
+      {/* <Suspense fallback={<SectionFallback minHeight="min-h-125" dark />}>
         <UpcomingClubEvents />
+      </Suspense> */}
+      <Suspense fallback={<SectionFallback minHeight="min-h-125" />}>
+        <Testimonials />
       </Suspense>
 
       <Suspense fallback={<SectionFallback dark />}>
         <MemberOffers />
       </Suspense>
 
-      <Suspense fallback={<SectionFallback minHeight="min-h-125" />}>
-        <Testimonials />
-      </Suspense>
-
       <Suspense fallback={<SectionFallback minHeight="min-h-150" />}>
-        <Membership />
+        <Membership mediaUrl="https://golfnvibes.com/uploads/media/videos/GOLFC.mp4" mediaType="video" />
       </Suspense>
     </main>
   );

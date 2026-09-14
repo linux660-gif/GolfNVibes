@@ -1,8 +1,11 @@
 httpx
-fastapi
+fastapi[standard]
 pydantic
 sqlalchemy
 pytest
 redis
 slowapi
 fastapi-mail
+asyncpg
+pwdlib[argon2]
+jwt

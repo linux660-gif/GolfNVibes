@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, EmailStr
 
 
@@ -15,6 +17,12 @@ class PartnerResponse(PartnerBase):
     pass
 
 
-class PartnerUpdate(PartnerBase):
-    pass
+class PartnerCategory(BaseModel):
+    name:str
+    create_at:datetime
+
+class PartnerCategoryResponse(BaseModel):
+    id: int
+    name: str
+
 

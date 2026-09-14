@@ -1,42 +1,40 @@
-
 services:
-  backend:
-    build:
-      context: ./GolfNVibesBackend
-      dockerfile: Dockerfile
-    container_name: golfnvibes_backend
+  database:
+    image: postgres:14.23-trixie
+    container_name: golfnvibestest_db
     env_file:
-      - ./GolfNVibesBackend/.env
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./GolfNVibesBackend:/app
-
-  db:
-    image: postgres:13
-    container_name: golfnvibes_db
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    env_file:
-      - ./.env
+      - ./Backend/.env
     ports:
       - "5432:5432"
     volumes:
       - golfnvibes_db_data:/var/lib/postgresql/data
-  
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: backend
+    env_file:
+      - ./Backend/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    volumes:
+      - ./Backend:/app
+
   frontend:
     build:
-      context: ./GolfNVibesFrontend
+      context: ./Frontend
       dockerfile: Dockerfile
-    container_name: golfnvibes_frontend
+    container_name: frontend
     ports:
-      - "5173:5173"
+      - "3000:3000"
     depends_on:
       - backend
     volumes:
-      - ./GolfNVibesFrontend:/app
+      - ./Frontend:/app
       - /app/node_modules
+
 volumes:
   golfnvibes_db_data:

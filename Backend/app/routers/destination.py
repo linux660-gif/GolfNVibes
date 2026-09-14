@@ -13,6 +13,7 @@ from app.schemas.destination_schema import (
 from app.models.destination import Destination as DestinationModel
 from app.models.destination import Continent
 from app.main import limiter
+from app.auth import CurrentUser
 
 router = APIRouter(prefix="/api/v1/trip/destination", tags=["Destination"])
 logger = logging.getLogger(name=__name__)
@@ -20,7 +21,7 @@ logger = logging.getLogger(name=__name__)
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @limiter.limit("2/minute")
-async def add_destination(request: Request, destinationSchema: DestinationSchema):
+async def add_destination(request: Request, destinationSchema: DestinationSchema,current_user: CurrentUser):
     async with get_db() as db:
         result = await db.execute(
             select(DestinationModel).where(
@@ -63,7 +64,5 @@ async def get_destination(request: Request):
         result = await db.execute(select(DestinationModel))
         existing_destinations = result.scalars().all()
         if not existing_destinations:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="No record Found"
-            )
+            []
         return existing_destinations

@@ -37,20 +37,16 @@ export default function Contacts({ topic }: { topic: string }) {
       name: "",
       email: "",
       message: "",
-      topic:'General'
+      topic:''
     },
   });
   const onSubmit = async (data: ContactData) => {
-    try {
-      const submissionPromise = api.post("/contacts", data);
+      const submissionPromise = api.post("/contacts/", data);
       await toast.promise(submissionPromise, {
         pending: "Submitting Your Request ....",
         success: "Message Successfully Submitted",
+        error: "Something went wrong. Please try again.",
       });
-      console.log(data)
-    } catch (error) {
-      console.log(`error submitting, ${error}`);
-    }
   };
   const errorclass = "mt-1.5 text-xs text-red-500";
   return (

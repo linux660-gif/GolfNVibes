@@ -7,6 +7,8 @@ from fastapi_mail import (
     MessageType,
     NameEmail,
 )
+from datetime import date
+from typing import Any
 from pydantic import EmailStr, SecretStr
 
 
@@ -76,12 +78,15 @@ class EmailService:
             return False
 
     async def send_plan_trip_confirmation(
-        self, email_to: EmailStr, destination: str, first_name: str, second_name: str
+        self, email_to: EmailStr, destination: str, first_name: str, second_name: str, reference:str, start_date:date, end_date:date
     ) -> bool:
         template_data = {
-            "reference_number": "ref",
-            "name": first_name + second_name,
+            "reference_number": reference,
+            "name": f"{first_name} {second_name}",
             "destination": destination,
+            "start_date": start_date,
+            "end_date": end_date,
+            "email_to": email_to
         }
 
         message = MessageSchema(
@@ -97,8 +102,8 @@ class EmailService:
             )
             logger.info("email sent")
             return True
-        except Exception:
-            logger.error("email not sent")
+        except Exception as e:
+            logger.exception("email not sent", e)
             return False
 
     async def send_membership_confirmation(
@@ -192,9 +197,10 @@ class EmailService:
             logger.error("email not sent")
             return False
 
-    async def send_partner_confirmation(self, email_to: EmailStr, partner: str) -> bool:
+    async def send_partner_confirmation(self, email_to: EmailStr, partner: str, partner_type:str) -> bool:
         template_data = {
-            "name": partner,
+            "organization": partner,
+            "partner_type":partner_type
         }
 
         message = MessageSchema(

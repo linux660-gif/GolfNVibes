@@ -12,15 +12,15 @@ interface VideoItem {
 const VIDEOS: VideoItem[] = [
   {
     id: "v1",
-    title: "Morocco Golf Experience 2026 Official Aftermovie",
+    title: "Vipingo Weekender",
     duration: "03:45",
-    src: "https://golfnvibes.com/uploads/media/videos/hero.mp4",
+    src: "https://golfnvibes.com/uploads/media/videos/intt(1).mp4",
   },
   {
     id: "v2",
-    title: "Vipingo Ridge Night Golf & Live DJ Highlights",
+    title: "⁠Antalya Golf Escape",
     duration: "02:10",
-    src: "https://golfnvibes.com/uploads/media/videos/vipingo.mp4",
+    src: "https://golfnvibes.com/uploads/media/videos/GOLFC.mp4",
   },
 ];
 
@@ -60,9 +60,9 @@ function VideoCard({
           <PlayIcon className="w-7 h-7 ml-1" />
         </span>
 
-        <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-zinc-950/80 text-[10px] font-mono text-zinc-300 border border-zinc-800">
+        {/* <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-zinc-950/80 text-[10px] font-mono text-zinc-300 border border-zinc-800">
           {video.duration}
-        </div>
+        </div> */}
       </div>
 
       <div className="p-5">

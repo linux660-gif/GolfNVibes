@@ -9,45 +9,43 @@ import {
   FooterTitle,
 } from "flowbite-react";
 import {
-  BsDribbble,
+
   BsFacebook,
-  BsGithub,
   BsInstagram,
-  BsTwitter,
 } from "react-icons/bs";
 import { motion } from "framer-motion";
 
 export default function LayoutFooter() {
   const destinations = [
-    { place: "Kenya", link: "/Kenya" },
-    { place: "South Africa", link: "/SouthAfrica" },
-    { place: "Morocco", link: "/Morocco" },
-    { place: "Dubai", link: "/Dubai" },
-    { place: "Abu Dhabi", link: "/AbuDhabi" },
-    { place: "Qatar", link: "/Qatar" },
-    { place: "More", link: "/Destinations" },
+    { place: "Kenya", link: "#" },
+    { place: "South Africa", link: "#" },
+    { place: "Morocco", link: "#" },
+    { place: "Dubai", link: "#" },
+    { place: "Abu Dhabi", link: "#" },
+    { place: "Qatar", link: "#" },
+    { place: "More", link: "#" },
   ];
 
 
 
   const helpCenter = [
     { platform: "WhatsApp", link: "https://whatsapp.com" },
-    { platform: "X", link: "https://x.com" },
-    { platform: "Facebook", link: "https://facebook.com" },
-    { platform: "Gmail", link: "mailto:info@golfnvibes.co.ke" },
-    { platform: "FAQ's", link: "/AbouUs" },
+    { platform: "Email", link: "mailto:admin@golfnvibes.com" },
     { platform: "Contact Us", link: "/ContactUs" },
   ];
 
   const company = [
     { action: "About Us", href: "/About" },
-    { action: "Golf Packages", href: "/GolfPackages" },
-    { action: "Blog", href: "/Blog" },
+    { action: "Golf Packages", href: "#" },
+    // { action: "Blog", href: "/Blog" },
     { action: "Gallery", href: "/Gallery" },
-    { action: "Events", href: "/Events" },
+    { action: "Events", href: "/Tournaments" },
     { action: "Become a Sponsor", href: "/Sponsor" },
-    { action: "Privacy Policy", href: "/PrivacyPolicy" },
-    { action: "Terms & Conditions", href: "/Terms&Conditions" },
+    { action: "Privacy Policy", href: "#" },
+    {
+      action: "Terms & Conditions",
+      href: "https://golfnvibes.com/uploads/media/documents/golfnvibes_terms_and_conditions.pdf",
+    },
   ];
 
   const containerVariants = {
@@ -114,11 +112,14 @@ export default function LayoutFooter() {
                 variants={containerVariants}
               >
                 {[
-                  { icon: BsFacebook, href: "#" },
-                  { icon: BsInstagram, href: "#" },
-                  { icon: BsTwitter, href: "#" },
-                  { icon: BsGithub, href: "#" },
-                  { icon: BsDribbble, href: "#" },
+                  {
+                    icon: BsFacebook,
+                    href: "https://www.facebook.com/search/top/?q=golfnvibes",
+                  },
+                  {
+                    icon: BsInstagram,
+                    href: "https://www.instagram.com/golfnvibes",
+                  },
                 ].map((item, index) => (
                   <motion.div
                     key={index}
@@ -173,8 +174,6 @@ export default function LayoutFooter() {
                 </FooterLinkGroup>
               </motion.div>
 
-              
-
               <motion.div variants={fadeInUp}>
                 <FooterTitle
                   title="help center"
@@ -203,29 +202,8 @@ export default function LayoutFooter() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:flex-row sm:px-6 lg:px-8">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-4 sm:flex-row sm:px-6 lg:px-8">
             <FooterCopyright href="#" by="GolfNVibes™" year={2026} />
-            <div className="flex space-x-6">
-              {[
-                { icon: BsFacebook, href: "#" },
-                { icon: BsInstagram, href: "#" },
-                { icon: BsTwitter, href: "#" },
-                { icon: BsGithub, href: "#" },
-                { icon: BsDribbble, href: "#" },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  whileHover={{ scale: 1.2, rotate: 5 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <FooterIcon
-                    href={item.href}
-                    icon={item.icon}
-                    className="text-gray-500 transition-colors duration-200 hover:text-[#0a4d30] dark:hover:text-[#bd982e]"
-                  />
-                </motion.div>
-              ))}
-            </div>
           </div>
         </motion.div>
       </div>

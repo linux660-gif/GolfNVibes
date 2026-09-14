@@ -7,8 +7,6 @@ const CATEGORIES = [
   { id: "all", label: "All Media" },
   { id: "holidays", label: "Golf Holidays" },
   { id: "tournaments", label: "Tournaments" },
-  { id: "community", label: "Community" },
-  { id: "corporate", label: "Corporate Events" },
   { id: "videos", label: "Videos" },
 ];
 

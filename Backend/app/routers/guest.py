@@ -9,6 +9,7 @@ from app.db.database import get_db
 from app.schemas.guest_schema import Guest as GuestSchema, GuestResponse
 from app.models.tournament import Guest as GuestModel
 from app.main import limiter
+from app.auth import CurrentUser
 
 
 router = APIRouter(prefix="/api/v1/tournament/guest", tags=["Guest"])
@@ -18,7 +19,7 @@ logger = logging.getLogger(name=__name__)
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @limiter.limit("2/minute")
-async def add_guest(request:Request, GuestSchema:GuestSchema):
+async def add_guest(request:Request, GuestSchema:GuestSchema, current_user: CurrentUser):
     async with get_db() as db:
         result = await db.execute(select(GuestModel).where(GuestModel.name == GuestSchema.name))
         existing_guest = result.scalars().all()
@@ -43,5 +44,5 @@ async def get_guest(request:Request):
         result = await db.execute(select(GuestModel))
         existing_guests = result.scalars().all()
         if not existing_guests:
-             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No record Found")
+             return []
         return existing_guests

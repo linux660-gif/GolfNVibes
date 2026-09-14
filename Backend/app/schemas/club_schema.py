@@ -6,6 +6,6 @@ class ClubCreate(BaseModel):
     name:str
     created_at:datetime
 class ClubResponse(ClubCreate):
-    pass
+    id:int
 
 

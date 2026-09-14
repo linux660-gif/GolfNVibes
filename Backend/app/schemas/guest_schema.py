@@ -4,4 +4,4 @@ class Guest(BaseModel):
     name:str
 
 class GuestResponse(Guest):
-    pass
+    id:int

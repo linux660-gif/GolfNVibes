@@ -26,6 +26,7 @@ from app.routers import (
     club,
     guest,
     destination,
+    users,
 )
 from app.db.database import Base, engine
 from app.core.logging_config import setup_logging
@@ -50,9 +51,13 @@ app.add_exception_handler(
 
 templates = Jinja2Templates(directory="app/templates")
 
+allowed_origins = [
+    "http://localhost:3000"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -74,6 +79,7 @@ app.include_router(continent.router)
 app.include_router(club.router)
 app.include_router(classification.router)
 #app.include_router(stripe.router)
+app.include_router(users.router)
 
 
 @app.get("/")

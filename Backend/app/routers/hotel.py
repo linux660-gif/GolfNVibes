@@ -9,6 +9,7 @@ from app.db.database import get_db
 from app.schemas.hotel_schema import Hotel as HotelSchema, HotelResponse
 from app.models.hotel import HotelCategory as HotelModel
 from app.main import limiter
+from app.auth import CurrentUser
 
 router = APIRouter(prefix="/api/v1/trip/hotel", tags=["Hotel"])
 logger = logging.getLogger(name=__name__)
@@ -16,7 +17,7 @@ logger = logging.getLogger(name=__name__)
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @limiter.limit("2/minute")
-async def add_hotel(request: Request, HotelSchema: HotelSchema):
+async def add_hotel(request: Request, HotelSchema: HotelSchema,current_user:CurrentUser):
     async with get_db() as db:
         result = await db.execute(
             select(HotelModel).where(HotelModel.name == HotelSchema.name)
@@ -48,5 +49,5 @@ async def get_hotel(request: Request):
         result = await db.execute(select(HotelModel))
         existing_hotels = result.scalars().all()
         if not existing_hotels:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No record Found")
+            return []
         return existing_hotels

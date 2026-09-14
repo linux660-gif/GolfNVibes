@@ -1,5 +1,5 @@
 
-import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
+//import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 
 export default function PlanTripHero() {
   return (
@@ -30,7 +30,7 @@ export default function PlanTripHero() {
             players, clubs, and enthusiasts together.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          {/* <div className="flex flex-wrap items-center justify-center gap-4">
             <a
               href="/Club"
               className="inline-flex items-center space-x-3 rounded-full bg-[oklch(.075_0_0)] px-6 py-3 text-sm font-medium text-white shadow-md transition-colors hover:bg-zinc-800 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
@@ -48,7 +48,7 @@ export default function PlanTripHero() {
             >
               Recent Event
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

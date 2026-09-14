@@ -1,5 +1,5 @@
 from typing import List
-from sqlalchemy import Integer, String, Text, DateTime, Date, ForeignKey
+from sqlalchemy import Integer, String, Text, DateTime, Date, ForeignKey,Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import UTC, datetime, date
 
@@ -53,7 +53,8 @@ class Tournament(Base):
     stripe_product_id: Mapped[str] = mapped_column(
         String(255), index=True, nullable=True
     )
-    amount: Mapped[str] = mapped_column(String, index=True, nullable=False, default="1")
+    amount: Mapped[float] = mapped_column(Float, index=True, nullable=False)
+    tournament_reference:Mapped[str] = mapped_column(String, index=True, nullable=False, unique=True)
     spots: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=datetime.now(UTC)
@@ -87,14 +88,7 @@ class Host(Base):
     vision: Mapped[str] = mapped_column(Text, nullable=False)
     guest: Mapped["Guest"] = relationship(back_populates="hosts")
     classification: Mapped["Classification"] = relationship(back_populates="hosts")
-    # events: Mapped[list["Event"]] = relationship(back_populates="host") list of events hosted by single host
 
 
-class Results(Base):
-    __tablename__ = "results"
-    id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, autoincrement=True, index=True
-    )
-    player: Mapped[str] = mapped_column(String(120), index=True, nullable=False)
 
 

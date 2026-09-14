@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   useForm,
   Controller,
@@ -15,8 +15,8 @@ import flags from "react-phone-number-input/flags";
 import api from "../../services/api";
 import "react-phone-number-input/style.css";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import EXPERIENCES from "../../data/experiences.json";
-import destinations from "../../data/destinations.json";
 import { toast } from "react-toastify";
 
 export interface PlanDetailsFormData {
@@ -24,20 +24,37 @@ export interface PlanDetailsFormData {
   last_name: string;
   email: string;
   phone_number: string;
-  continent: string;
-  destination: string;
+  continent_id: string;
+  destination_id: string;
   other_destination?: string;
-  date: string;
+  start_date: string;
+  end_date: string;
   flexible_dates: string;
   golfers: number;
   non_golfers: number;
   budget: string;
   rounds: number;
-  hotel: string;
+  hotel_id: string;
   flights: string;
   airport_transfers: string;
   experiences: string[];
   additional_specifications?: string;
+}
+
+export interface Continents {
+  id: string;
+  name: string;
+}
+
+export interface Destinations {
+  continent_id: string;
+  id: string;
+  name: string;
+}
+
+export interface Hotels {
+  id: string;
+  name: string;
 }
 
 const defaultSchema = yup.object().shape({
@@ -49,14 +66,20 @@ const defaultSchema = yup.object().shape({
     .email("Invalid email address")
     .required("Email is required"),
   phone_number: yup.string().required("Phone number is required"),
-  continent: yup.string().required("Please select a continent"),
-  destination: yup.string().required("Please select a destination"),
-  other_destination: yup.string().when("destination", {
+  continent_id: yup.string().required("Please select a continent"),
+  destination_id: yup.string().required("Please select a destination"),
+  other_destination: yup.string().when("destination_id", {
     is: "Other (Please Specify)",
-    then: (schema) => schema.required("Please specify your destination"),
+    then: (schema) =>
+      schema.required("Please specify your destination"),
     otherwise: (schema) => schema.optional().default(""),
   }),
-  date: yup.string().required("Please select your preferred travel date"),
+  start_date: yup
+    .string()
+    .required("Please select your preferred start travel date"),
+  end_date: yup
+    .string()
+    .required("Please select your preferred End travel date"),
   flexible_dates: yup.string().required("Please select an option"),
   golfers: yup
     .number()
@@ -77,7 +100,7 @@ const defaultSchema = yup.object().shape({
     .integer("Must be a whole number")
     .min(1, "At least 1 round is required")
     .required("Please enter the number of rounds"),
-  hotel: yup.string().required("Please select a hotel preference"),
+  hotel_id: yup.string().required("Please select a hotel preference"),
   flights: yup.string().required("Please select whether flights are required"),
   airport_transfers: yup
     .string()
@@ -88,8 +111,10 @@ const defaultSchema = yup.object().shape({
 
 const inputClass =
   "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition-all duration-300 placeholder:text-zinc-400 hover:border-zinc-500 focus:border-[#bd982e] focus:ring-2 focus:ring-[#bd982e]/20";
+
 const labelClass =
   "mb-2 block text-[11px] font-semibold uppercase tracking-[0.15em] text-zinc-700";
+
 const errorClass = "mt-1.5 text-xs text-red-500";
 
 interface TextFieldProps {
@@ -118,11 +143,14 @@ function TextField({
   inputMode,
 }: TextFieldProps) {
   const errorId = `${id}-error`;
+
   return (
     <div>
       <label htmlFor={id} className={labelClass}>
-        {label} {required && <span className="text-[#bd982e]">*</span>}
+        {label}{" "}
+        {required && <span className="text-[#bd982e]">*</span>}
       </label>
+
       <input
         id={id}
         type={type}
@@ -131,9 +159,76 @@ function TextField({
         inputMode={inputMode}
         aria-invalid={error ? "true" : "false"}
         aria-describedby={error ? errorId : undefined}
-        {...register(id, valueAsNumber ? { valueAsNumber: true } : undefined)}
+        {...register(
+          id,
+          valueAsNumber ? { valueAsNumber: true } : undefined
+        )}
         className={inputClass}
       />
+
+      {error && (
+        <p id={errorId} role="alert" className={errorClass}>
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
+interface SelectFieldProps {
+  id: Path<PlanDetailsFormData>;
+  label: string;
+  register: UseFormRegister<PlanDetailsFormData>;
+  options: SelectOption[];
+  error?: string;
+  required?: boolean;
+  disabled?: boolean;
+  placeholder?: string;
+}
+
+function SelectField({
+  id,
+  label,
+  register,
+  options,
+  error,
+  required,
+  disabled,
+  placeholder,
+}: SelectFieldProps) {
+  const errorId = `${id}-error`;
+
+  return (
+    <div>
+      <label htmlFor={id} className={labelClass}>
+        {label}{" "}
+        {required && <span className="text-[#bd982e]">*</span>}
+      </label>
+
+      <select
+        id={id}
+        disabled={disabled}
+        aria-invalid={error ? "true" : "false"}
+        aria-describedby={error ? errorId : undefined}
+        {...register(id)}
+        className={`${inputClass} cursor-pointer ${
+          disabled ? "disabled:cursor-not-allowed disabled:opacity-60" : ""
+        }`}
+      >
+        {placeholder && <option value="">{placeholder}</option>}
+
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+
       {error && (
         <p id={errorId} role="alert" className={errorClass}>
           {error}
@@ -159,9 +254,11 @@ function RadioGroup({
   options = ["yes", "no"],
 }: RadioGroupProps) {
   const errorId = `${name}-error`;
+
   return (
     <fieldset>
       <legend className={labelClass}>{legend}</legend>
+
       <div
         className="flex h-11 items-center gap-6 rounded-xl border border-gray-300 bg-white px-4"
         aria-describedby={error ? errorId : undefined}
@@ -177,10 +274,12 @@ function RadioGroup({
               {...register(name)}
               className="h-4 w-4 accent-[#bd982e]"
             />
+
             <span>{option}</span>
           </label>
         ))}
       </div>
+
       {error && (
         <p id={errorId} role="alert" className={errorClass}>
           {error}
@@ -195,26 +294,65 @@ function FormSection({
   description,
   children,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   description?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-      <div className="mb-4">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#bd982e]">
-          {eyebrow}
-        </p>
-        {description && (
-          <p className="mt-1 text-xs text-zinc-500">{description}</p>
-        )}
-      </div>
+      {eyebrow && (
+        <div className="mb-4">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#bd982e]">
+            {eyebrow}
+          </p>
+
+          {description && (
+            <p className="mt-1 text-xs text-zinc-500">{description}</p>
+          )}
+        </div>
+      )}
+
       <div className="grid gap-4">{children}</div>
     </div>
   );
 }
 
+function FormColumn({
+  number,
+  title,
+  children,
+}: {
+  number: string;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-3 pb-1">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#0a4d30] text-xs font-bold text-white">
+          {number}
+        </span>
+
+        <h3 className="text-sm font-bold uppercase tracking-[0.15em] text-slate-900">
+          {title}
+        </h3>
+      </div>
+
+      {children}
+    </div>
+  );
+}
+
 export default function PlanTripForm() {
+  const [hotels, setHotels] = useState<Hotels[]>([]);
+  const [hotelLoading, setHotelLoading] = useState(true);
+
+  const [continents, setContinents] = useState<Continents[]>([]);
+  const [continentLoading, setContinentLoading] = useState(true);
+
+  const [destinations, setDestinations] = useState<Destinations[]>([]);
+  const [destinationLoading, setDestinationLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -233,51 +371,172 @@ export default function PlanTripForm() {
       flexible_dates: "no",
       flights: "no",
       airport_transfers: "no",
-      hotel: "4★ Hotel",
+      hotel_id: "4★ Hotel",
     },
   });
 
-  const continent = useWatch({ control, name: "continent" });
-  const destination = useWatch({ control, name: "destination" });
+  const continent = useWatch({
+    control,
+    name: "continent_id",
+  });
+
+  const destination = useWatch({
+    control,
+    name: "destination_id",
+  });
+
   const selectedExperiences = watch("experiences") || [];
 
-  const availableDestinations =
-    destinations.CONTINENTS.find((item) => item.continent === continent)
-      ?.destinations || [];
+  useEffect(() => {
+    let isMounted = true;
+
+    api
+      .get("/destination/continent/")
+      .then((response) => {
+        if (!isMounted) return;
+
+        setContinents(response.data)
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+
+        console.error(err)
+      })
+      .finally(() => {
+        if (isMounted) {
+          setContinentLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
-    setValue("destination", "");
+    if (!continent) {
+      setDestinations([]);
+      setDestinationLoading(false);
+      setValue("destination_id", "");
+      return;
+    }
+
+    let isMounted = true;
+
+    setDestinations([]);
+    setDestinationLoading(true);
+    setValue("destination_id", "");
+
+    api
+      .get("/trip/destination/", {
+        params: {
+          continent_id: continent,
+        },
+      })
+      .then((response) => {
+        if (!isMounted) return;
+
+        setDestinations(response.data);
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+
+        setDestinations([]);
+        console.error(err)
+      })
+      .finally(() => {
+        if (isMounted) {
+          setDestinationLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [continent, setValue]);
 
-  const handleFormSubmit: SubmitHandler<PlanDetailsFormData> = async (data) => {
-    try {
-      await toast.promise(api.post("trips", data), {
-        pending: "Submitting your request...",
-        success: "Custom trip successfully submitted!"
+  useEffect(() => {
+    let isMounted = true;
+
+    api
+      .get("/trip/hotel/")
+      .then((response) => {
+        if (!isMounted) return;
+
+        setHotels(response.data);
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+
+        console.error(err)
+      })
+      .finally(() => {
+        if (isMounted) {
+          setHotelLoading(false);
+        }
       });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleFormSubmit: SubmitHandler<PlanDetailsFormData> = async (
+    data
+  ) => {
+      await toast.promise(api.post("/trip/", data), {
+        pending: "Submitting your request...",
+        success: "Custom trip successfully submitted!",
+        error: "Something went wrong. Please try again"
+      });
+
       reset();
-    } catch {
-      // error toast already shown by api/errors
-    }
+      setDestinations([]);
   };
 
   const today = new Date().toISOString().split("T")[0];
 
+  const startDate = useWatch({
+    control,
+    name: "start_date",
+  });
+
   return (
-    <div className="relative mx-auto my-8 w-full max-w-7xl overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 font-sans text-slate-800 shadow-sm lg:my-16">
-      <div className="mb-8 text-center sm:text-left border-b border-slate-100 pb-6">
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+    <div className="relative mx-auto my-8 w-full max-w-7xl overflow-hidden rounded-3xl border border-slate-200 bg-white font-sans text-slate-800 shadow-xl lg:my-16">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-32 -top-32 h-80 w-80 rounded-full bg-[#bd982e]/5 blur-3xl"
+      />
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-32 bottom-0 h-80 w-80 rounded-full bg-[#0a4d30]/5 blur-3xl"
+      />
+
+      <div className="relative border-b border-slate-100 bg-slate-50/60 px-6 py-8 sm:px-10 sm:py-10">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#bd982e]">
+          Bespoke Trip Planning
+        </p>
+
+        <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
           Plan Your Golf Trip
         </h2>
-        <p className="mt-2 text-sm text-slate-600 sm:text-base">
+
+        <div className="mt-3 h-0.5 w-12 bg-[#bd982e]" />
+
+        <p className="mt-4 max-w-2xl text-sm text-slate-600 sm:text-base">
           Provide your travel details below and let us curate a personalized,
           luxury golf itinerary tailored to your group.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className="space-y-6">
+      <form
+        onSubmit={handleSubmit(handleFormSubmit)}
+        noValidate
+        className="relative p-6 sm:p-10"
+      >
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 lg:gap-8">
+          <FormColumn number="01" title="Traveler Details">
             <FormSection
               eyebrow="Personal Information"
               description="Please provide your contact details."
@@ -290,6 +549,7 @@ export default function PlanTripForm() {
                 register={register}
                 error={errors.first_name?.message}
               />
+
               <TextField
                 id="last_name"
                 label="Last Name"
@@ -298,6 +558,7 @@ export default function PlanTripForm() {
                 register={register}
                 error={errors.last_name?.message}
               />
+
               <TextField
                 id="email"
                 label="Email Address"
@@ -307,10 +568,12 @@ export default function PlanTripForm() {
                 register={register}
                 error={errors.email?.message}
               />
+
               <div>
                 <label htmlFor="phone_number" className={labelClass}>
                   Phone Number <span className="text-[#bd982e]">*</span>
                 </label>
+
                 <Controller
                   control={control}
                   name="phone_number"
@@ -326,6 +589,7 @@ export default function PlanTripForm() {
                     />
                   )}
                 />
+
                 {errors.phone_number && (
                   <p role="alert" className={errorClass}>
                     {errors.phone_number.message}
@@ -338,52 +602,49 @@ export default function PlanTripForm() {
               eyebrow="Destination"
               description="Where would you like your golf journey to take you?"
             >
-              <div>
-                <label className={labelClass}>
-                  Preferred Continent <span className="text-[#bd982e]">*</span>
-                </label>
-                <select {...register("continent")} className={inputClass}>
-                  <option value="">Select Continent</option>
-                  {destinations.CONTINENTS.map((item) => (
-                    <option key={item.continent} value={item.continent}>
-                      {item.continent}
-                    </option>
-                  ))}
-                </select>
-                {errors.continent && (
-                  <p role="alert" className={errorClass}>
-                    {errors.continent.message}
-                  </p>
-                )}
-              </div>
+              <SelectField
+                id="continent_id"
+                label="Preferred Continent"
+                required
+                placeholder={
+                  continentLoading
+                    ? "Loading continents..."
+                    : "Select Continent"
+                }
+                register={register}
+                error={errors.continent_id?.message}
+                disabled={continentLoading}
+                options={continents.map((item) => ({
+                  value: item.id,
+                  label: item.name,
+                }))}
+              />
 
-              <div>
-                <label className={labelClass}>
-                  Preferred Destination{" "}
-                  <span className="text-[#bd982e]">*</span>
-                </label>
-                <select
-                  {...register("destination")}
-                  disabled={!continent}
-                  className={`${inputClass} disabled:cursor-not-allowed disabled:opacity-60`}
-                >
-                  <option value="">
-                    {continent
-                      ? "Select Destination"
-                      : "Select a continent first"}
-                  </option>
-                  {availableDestinations.map((dest: string) => (
-                    <option key={dest} value={dest}>
-                      {dest}
-                    </option>
-                  ))}
-                </select>
-                {errors.destination && (
-                  <p role="alert" className={errorClass}>
-                    {errors.destination.message}
-                  </p>
-                )}
-              </div>
+              <SelectField
+                id="destination_id"
+                label="Preferred Destination"
+                required
+                disabled={!continent || destinationLoading}
+                placeholder={
+                  !continent
+                    ? "Select a continent first"
+                    : destinationLoading
+                      ? "Loading destinations..."
+                      : "Select Destination"
+                }
+                register={register}
+                error={errors.destination_id?.message}
+                options={[
+                  ...destinations.map((dest) => ({
+                    value: dest.id,
+                    label: dest.name,
+                  })),
+                  {
+                    value: "Other (Please Specify)",
+                    label: "Other (Please Specify)",
+                  },
+                ]}
+              />
 
               <AnimatePresence mode="wait">
                 {destination === "Other (Please Specify)" && (
@@ -407,16 +668,36 @@ export default function PlanTripForm() {
               </AnimatePresence>
             </FormSection>
 
-            <FormSection eyebrow="">
-              <TextField
-                id="date"
-                label="Preferred Date"
-                type="date"
-                required
-                min={today}
-                register={register}
-                error={errors.date?.message}
-              />
+            <FormSection
+              eyebrow="Travel Dates"
+              description="When would you like to travel?"
+            >
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-start">
+                <TextField
+                  id="start_date"
+                  label="Start Date"
+                  type="date"
+                  required
+                  min={today}
+                  register={register}
+                  error={errors.start_date?.message}
+                />
+
+                <div className="mt-8 hidden h-11 items-center justify-center text-zinc-300 sm:flex">
+                  <ArrowLongRightIcon className="h-5 w-5" />
+                </div>
+
+                <TextField
+                  id="end_date"
+                  label="End Date"
+                  type="date"
+                  required
+                  min={startDate || today}
+                  register={register}
+                  error={errors.end_date?.message}
+                />
+              </div>
+
               <RadioGroup
                 legend="Flexible Dates?"
                 name="flexible_dates"
@@ -424,9 +705,9 @@ export default function PlanTripForm() {
                 error={errors.flexible_dates?.message}
               />
             </FormSection>
-          </div>
+          </FormColumn>
 
-          <div className="space-y-6">
+          <FormColumn number="02" title="Trip Preferences">
             <FormSection
               eyebrow="Golf Party"
               description="Tell us about your travelling party."
@@ -441,6 +722,7 @@ export default function PlanTripForm() {
                 register={register}
                 error={errors.golfers?.message}
               />
+
               <TextField
                 id="non_golfers"
                 label="Non-Golfers"
@@ -451,6 +733,7 @@ export default function PlanTripForm() {
                 register={register}
                 error={errors.non_golfers?.message}
               />
+
               <TextField
                 id="rounds"
                 label="Number of Rounds"
@@ -463,28 +746,40 @@ export default function PlanTripForm() {
               />
             </FormSection>
 
-            <FormSection eyebrow="">
-              <TextField
+            <FormSection eyebrow="Budget & Accommodation">
+              <SelectField
                 id="budget"
-                label="Budget Per Person"
-                placeholder="$3,000 - $5,000"
+                label="Budget Per Person (USD)"
+                required
+                placeholder="Select Budget Range"
                 register={register}
                 error={errors.budget?.message}
+                options={[
+                  {
+                    value: "1500-2500",
+                    label: "$1,500 – $2,500",
+                  },
+                  {
+                    value: "3000-5000",
+                    label: "$3,000 – $5,000",
+                  },
+                ]}
               />
-              <div>
-                <label className={labelClass}>Hotel Preference</label>
-                <select {...register("hotel")} className={inputClass}>
-                  <option value="3★ Hotel">3★ Hotel</option>
-                  <option value="4★ Hotel">4★ Hotel</option>
-                  <option value="5★ Hotel">5★ Hotel</option>
-                  <option value="Luxury Villa">Luxury Villa</option>
-                </select>
-                {errors.hotel && (
-                  <p role="alert" className={errorClass}>
-                    {errors.hotel.message}
-                  </p>
-                )}
-              </div>
+
+              <SelectField
+                id="hotel_id"
+                label="Hotel Preference"
+                register={register}
+                error={errors.hotel_id?.message}
+                disabled={hotelLoading}
+                placeholder={
+                  hotelLoading ? "Loading hotels..." : "Select Hotel"
+                }
+                options={hotels.map((item) => ({
+                  value: item.id,
+                  label: item.name,
+                }))}
+              />
             </FormSection>
 
             <FormSection
@@ -497,6 +792,7 @@ export default function PlanTripForm() {
                 register={register}
                 error={errors.flights?.message}
               />
+
               <RadioGroup
                 legend="Airport Transfers?"
                 name="airport_transfers"
@@ -504,22 +800,17 @@ export default function PlanTripForm() {
                 error={errors.airport_transfers?.message}
               />
             </FormSection>
-          </div>
+          </FormColumn>
 
-          <div className="space-y-6">
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <div className="mb-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-green-700">
-                  Experiences
-                </p>
-                <p className="mt-1 text-xs leading-5 text-zinc-500">
-                  Choose the experiences you would like included in your
-                  itinerary.
-                </p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <FormColumn number="03" title="Final Touches">
+            <FormSection
+              eyebrow="Experiences"
+              description="Choose the experiences you would like included in your itinerary."
+            >
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {EXPERIENCES.EXPERIENCES.map((experience) => {
                   const isActive = selectedExperiences.includes(experience);
+
                   return (
                     <motion.label
                       key={experience}
@@ -533,6 +824,7 @@ export default function PlanTripForm() {
                         {...register("experiences")}
                         className="peer sr-only"
                       />
+
                       <span
                         className={`flex min-h-13 items-center justify-center rounded-xl border px-3 py-3 text-center text-xs font-medium leading-4 transition-all duration-300 sm:text-sm ${
                           isActive
@@ -557,6 +849,7 @@ export default function PlanTripForm() {
                               />
                             </svg>
                           )}
+
                           {experience}
                         </span>
                       </span>
@@ -564,47 +857,57 @@ export default function PlanTripForm() {
                   );
                 })}
               </div>
+
               {errors.experiences && (
                 <p role="alert" className={errorClass}>
                   {errors.experiences.message}
                 </p>
               )}
-            </div>
+            </FormSection>
 
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <div className="mb-4">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#bd982e]">
-                  Bespoke Requirements
-                </p>
-                <p className="mt-1 text-xs leading-5 text-zinc-500">
-                  Tell us anything else that would make your trip exceptional.
-                </p>
-              </div>
-              <label htmlFor="additional_specifications" className={labelClass}>
-                Additional Requirements
-              </label>
-              <textarea
-                id="additional_specifications"
-                rows={4}
-                {...register("additional_specifications")}
-                placeholder="Tell us about specific golf courses, dietary requirements, special occasions, or preferred activities..."
-                className="w-full resize-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm leading-6 text-black outline-none transition-all duration-300 placeholder:text-zinc-400 hover:border-zinc-500 focus:border-[#bd982e] focus:ring-2 focus:ring-[#bd982e]/20"
-              />
-              {errors.additional_specifications && (
-                <p role="alert" className={errorClass}>
-                  {errors.additional_specifications.message}
-                </p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full rounded-xl bg-[#0a4d30] py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-300 hover:bg-[#083d26] disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-[#0a4d30] focus-visible:ring-offset-2"
+            <FormSection
+              eyebrow="Bespoke Requirements"
+              description="Tell us anything else that would make your trip exceptional."
             >
-              {isSubmitting ? "Submitting..." : "Submit Proposal"}
-            </button>
-          </div>
+              <div>
+                <label
+                  htmlFor="additional_specifications"
+                  className={labelClass}
+                >
+                  Additional Requirements
+                </label>
+
+                <textarea
+                  id="additional_specifications"
+                  rows={4}
+                  {...register("additional_specifications")}
+                  placeholder="Tell us about specific golf courses, dietary requirements, special occasions, or preferred activities..."
+                  className="w-full resize-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm leading-6 text-black outline-none transition-all duration-300 placeholder:text-zinc-400 hover:border-zinc-500 focus:border-[#bd982e] focus:ring-2 focus:ring-[#bd982e]/20"
+                />
+
+                {errors.additional_specifications && (
+                  <p role="alert" className={errorClass}>
+                    {errors.additional_specifications.message}
+                  </p>
+                )}
+              </div>
+            </FormSection>
+
+            <div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full rounded-xl bg-[#0a4d30] py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-300 hover:bg-[#083d26] disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-[#0a4d30] focus-visible:ring-offset-2"
+              >
+                {isSubmitting ? "Submitting..." : "Submit Proposal"}
+              </button>
+
+              <p className="mt-3 text-center text-[11px] text-zinc-400">
+                Our concierge team will personally review your request and
+                follow up shortly.
+              </p>
+            </div>
+          </FormColumn>
         </div>
       </form>
     </div>
