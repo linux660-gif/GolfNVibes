@@ -43,12 +43,22 @@ async def add_continent(request: Request, ContinentSchema: ContinentSchema,curre
         )
 
 
-@router.get("/", status_code=status.HTTP_200_OK, response_model=List[ContinentResponse])
+@router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    response_model=List[ContinentResponse],
+)
 @limiter.limit("5/minute")
-async def get_destination(request: Request):
+async def get_continents(request: Request):
     async with get_db() as db:
         result = await db.execute(select(ContinentModel))
+
         existing_continents = result.scalars().all()
+
         if not existing_continents:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No record Found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No continents found",
+            )
+
         return existing_continents

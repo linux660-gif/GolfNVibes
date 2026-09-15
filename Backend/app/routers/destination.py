@@ -56,13 +56,28 @@ async def add_destination(request: Request, destinationSchema: DestinationSchema
 
 
 @router.get(
-    "/", status_code=status.HTTP_200_OK, response_model=List[DestinationResponse]
+    "/",
+    status_code=status.HTTP_200_OK,
+    response_model=List[DestinationResponse],
 )
 @limiter.limit("5/minute")
-async def get_destination(request: Request):
+async def get_destinations(
+    request: Request,
+    continent_id: int,
+):
     async with get_db() as db:
-        result = await db.execute(select(DestinationModel))
+        result = await db.execute(
+            select(DestinationModel).where(
+                DestinationModel.continent_id == continent_id
+            )
+        )
+
         existing_destinations = result.scalars().all()
+
         if not existing_destinations:
-            []
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No destinations found for this continent",
+            )
+
         return existing_destinations
