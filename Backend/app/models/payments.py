@@ -41,7 +41,7 @@ class TournamentPayment(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=datetime.now(UTC)
     )
-    status: Mapped[str] = mapped_column(String(20), index=True, nullable=False)
+    status: Mapped[str] = mapped_column(String(200), index=True, nullable=False)
     completed_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True)
     )

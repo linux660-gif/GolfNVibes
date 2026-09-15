@@ -11,7 +11,7 @@ class PartnerCategory(Base):
     id: Mapped[int] = mapped_column(
         Integer, primary_key=True, index=True, autoincrement=True
     )
-    name: Mapped[str] = mapped_column(String(20), index=True, nullable=False, unique=True)
+    name: Mapped[str] = mapped_column(String(200), index=True, nullable=False, unique=True)
     partners: Mapped[List["Partner"]] = relationship(back_populates="partner_category")
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=datetime.now(UTC)

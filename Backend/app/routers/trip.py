@@ -76,7 +76,7 @@ async def add_custom_trip(request: Request, trip: PlanTrip) -> Dict[str, str]:
             last_name=trip.last_name,
             email=trip.email,
             phone_number=trip.phone_number,
-            golfers=trip.golfers,
+            golfers=trip.golfers, 
             non_golfers=trip.non_golfers,
             budget=trip.budget,
             rounds=trip.rounds,
