@@ -29,6 +29,7 @@ from app.routers import (
     users,
 )
 from app.db.database import Base, engine
+from app.core.config import settings
 from app.core.logging_config import setup_logging
 
 setup_logging()
@@ -40,8 +41,14 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(Base.metadata.create_all)
     yield
 
+SHOW_DOCS = settings.app_env != "production"
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    lifespan=lifespan,
+    docs_url="/docs" if SHOW_DOCS else None,
+    redoc_url="/redoc" if SHOW_DOCS else None,
+    openapi_url="/openapi.json" if SHOW_DOCS else None
+    )
 app.state.limiter = limiter
 app.add_exception_handler(
     exc_class_or_status_code=RateLimitExceeded, handler=_rate_limit_exceeded_handler
@@ -50,6 +57,8 @@ app.add_exception_handler(
 # app.mount("/static", StaticFiles(directory="static"), name='static')
 
 templates = Jinja2Templates(directory="app/templates")
+
+
 allow_origins = [
     "https://golfnvibes.com",
     "https://www.golfnvibes.com",
@@ -84,14 +93,14 @@ app.include_router(users.router)
 
 @app.get("/")
 async def root(request: Request):
-    return templates.TemplateResponse(request, "button.html")
+    return {"status":"OK"}
 
 
-@app.get("/success")
-async def success(request: Request):
-    return templates.TemplateResponse(request, "success.html")
+# @app.get("/success")
+# async def success(request: Request):
+#     return templates.TemplateResponse(request, "success.html")
 
 
-@app.get("/cancel")
-async def cancel(request: Request):
-    return templates.TemplateResponse(request, "cancel.html")
+# @app.get("/cancel")
+# async def cancel(request: Request):
+#     return templates.TemplateResponse(request, "cancel.html")

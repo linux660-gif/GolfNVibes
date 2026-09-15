@@ -11,7 +11,7 @@ from app.auth import  hash_password,verify_password,create_access_token,CurrentU
 router = APIRouter(prefix="/api/v1/users", tags=["Users"])
 
 @router.post("/")
-async def create_user(user: UserCreate):
+async def create_user(user: UserCreate, current_user:CurrentUser):
     async with get_db() as db:
         result = await db.execute(select(Users).where(Users.email == user.email))
         existing_user = result.scalars().first()
@@ -30,7 +30,7 @@ async def create_user(user: UserCreate):
 
 
 @router.get("/me")
-async def get_current_user(current_user:CurrentUser):
+async def get_current_user(current_user:CurrentUser, current_user:CurrentUser):
     return current_user
 
 

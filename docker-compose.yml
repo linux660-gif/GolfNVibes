@@ -32,5 +32,16 @@ services:
       - backend
     restart: always
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: golfnvibes_pgadmin
+    env_file:
+      - ./secrets/pgadmin.env
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      - database
+    restart: always
+
 volumes:
   golfnvibes_db_data:

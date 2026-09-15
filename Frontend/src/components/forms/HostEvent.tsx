@@ -63,7 +63,7 @@ export default function HostEventForm() {
 
   const onSubmit: SubmitHandler<HostData> = async (data: HostData) => {
     try {
-      const submissionPromise = api.post("/tournament/host", data);
+      const submissionPromise = api.post("/tournament/host/", data);
       await toast.promise(submissionPromise, {
         pending: "Submitting Your Request ....",
         success: "Request Successfully Submitted",

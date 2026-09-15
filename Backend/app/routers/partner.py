@@ -19,7 +19,7 @@ email_service = EmailService()
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-@limiter.limit("2/minute")
+@limiter.limit("5/hour")
 async def add_partner(request:Request,partner: PartnerSchema):
     async with get_db() as db:
         result = await db.execute(

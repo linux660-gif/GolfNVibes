@@ -29,11 +29,12 @@ export default function GNVNewsletter() {
   const onSubmit: SubmitHandler<Newsletter> = useCallback(
     async (data) => {
       try {
-        await api.post("/newsletter", data);
+        await api.post("/newsletter/", data);
         toast.success("Successfully subscribed to Golf N Vibes");
         reset();
       } catch (error) {
         toast.error("Something went wrong. Please try again.");
+        console.error(error)
       }
     },
     [reset],

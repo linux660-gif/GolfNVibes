@@ -19,7 +19,7 @@ class PlanTrip(BaseModel):
     email: EmailStr = Field(min_length=5, max_length=255 )
     phone_number: str = Field(min_length=9, max_length=20)
     golfers: int = Field(gt=0, default=1)
-    non_golfers: int = Field(gt=0, default=0)
+    non_golfers: int
     rounds: int = Field(gt=0, default=1 )
     continent_id:int | None = Field(gt=0, default=1)
     destination_id:int | None = Field(gt=0, default=1 )

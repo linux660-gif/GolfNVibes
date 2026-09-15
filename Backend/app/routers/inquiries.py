@@ -15,7 +15,7 @@ email_service = EmailService()
 #add background tasks
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-@limiter.limit(limit_value="5/minute")
+@limiter.limit(limit_value="5/hour")
 async def add_inquiry(request: Request, inquiry: InquiryCreate):
 
     async with get_db() as db:

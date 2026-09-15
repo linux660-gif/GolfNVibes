@@ -1,5 +1,5 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import LayoutFooter from "./layout/Footer";
 import LayoutNavbar from "./layout/Navbar";
 import ObserverProvider from "./context/ObserverProvider";
@@ -15,11 +15,11 @@ const Contact = lazy(() => import("./pages/Contacts"));
 const Partners = lazy(() => import("./pages/Partner"));
 const TheClub = lazy(() => import("./pages/TheClub"));
 const PlanTrip = lazy(() => import("./pages/PlanTrip"));
-const Booking = lazy(() => import('./pages/Booking'))
+const Booking = lazy(() => import("./pages/Booking"));
 
 function PageLoadingFallback() {
   return (
-    <div className="flex items-center justify-center min-h-150 w-full">
+    <div className="flex h-full w-full items-center justify-center">
       <Oval
         height={80}
         width={80}
@@ -34,26 +34,39 @@ function PageLoadingFallback() {
   );
 }
 
+function ScrollManager() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <ObserverProvider>
-      <div className="overflow-hidden bg-white!">
+      <div className="flex min-h-screen flex-col overflow-hidden bg-white!">
         <BrowserRouter>
+          <ScrollManager />
           <LayoutNavbar />
-          <Suspense fallback={<PageLoadingFallback />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/GolfHolidays/PlanMyTrip" element={<PlanTrip />} />
-              <Route path="/Tournaments" element={<Tournaments />} />
-              <Route path="/Club" element={<TheClub />} />
-              <Route path="/Gallery" element={<Gallery />} />
-              <Route path="/About" element={<About />} />
-              <Route path="/ContactUs" element={<Contact />} />
-              <Route path="/Partners" element={<Partners />} />
-              <Route path="/Events/Book" element = {<Booking />} />
-              <Route path="*" element={<PageNotFound />} />
-            </Routes>
-          </Suspense>
+          <main className="flex-1">
+            <Suspense fallback={<PageLoadingFallback />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/GolfHolidays/PlanMyTrip" element={<PlanTrip />} />
+                <Route path="/Tournaments" element={<Tournaments />} />
+                <Route path="/Club" element={<TheClub />} />
+                <Route path="/Gallery" element={<Gallery />} />
+                <Route path="/About" element={<About />} />
+                <Route path="/ContactUs" element={<Contact />} />
+                <Route path="/Partners" element={<Partners />} />
+                <Route path="/Events/Book" element={<Booking />} />
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+            </Suspense>
+          </main>
           <LayoutFooter />
         </BrowserRouter>
         <ToastContainer position="top-right" theme="colored" autoClose={3000} />

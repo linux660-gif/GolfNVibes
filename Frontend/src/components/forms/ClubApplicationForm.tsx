@@ -62,7 +62,7 @@ function MediaPanel({
   overlayText = "Join a global community of golfers, travelers, and connectors.",
 }: MembershipApplicationFormProps) {
   return (
-    <div className="relative min-h-64 w-full overflow-hidden bg-linear-to-br from-[#0a4d30] to-[#083d26] lg:min-h-full">
+    <div className="relative min-h-64 w-full hidden lg:block overflow-hidden bg-linear-to-br from-[#0a4d30] to-[#083d26] lg:min-h-full">
       {mediaUrl && mediaType === "video" && (
         <video
           src={mediaUrl}

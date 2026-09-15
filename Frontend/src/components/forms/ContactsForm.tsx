@@ -37,7 +37,7 @@ export default function Contacts({ topic }: { topic: string }) {
       name: "",
       email: "",
       message: "",
-      topic:''
+      topic:'General'
     },
   });
   const onSubmit = async (data: ContactData) => {
