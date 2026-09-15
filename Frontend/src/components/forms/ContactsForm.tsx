@@ -41,7 +41,7 @@ export default function Contacts({ topic }: { topic: string }) {
     },
   });
   const onSubmit = async (data: ContactData) => {
-      const submissionPromise = api.post("/contacts/", data);
+      const submissionPromise = api.post("/inquiry/", data);
       await toast.promise(submissionPromise, {
         pending: "Submitting Your Request ....",
         success: "Message Successfully Submitted",
