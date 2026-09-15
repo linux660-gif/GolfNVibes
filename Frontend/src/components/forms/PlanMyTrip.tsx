@@ -310,7 +310,7 @@ const PlanTripForm = () => {
     setLoading(true);
 
     try {
-      await toast.promise(api.post("/trips", data), {
+      await toast.promise(api.post("/trips/", data), {
         pending: "Submitting your request...",
         success: "Custom trip successfully submitted!",
         error: "Failed to submit your trip request.",
