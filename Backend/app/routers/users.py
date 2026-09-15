@@ -30,7 +30,7 @@ async def create_user(user: UserCreate, current_user:CurrentUser):
 
 
 @router.get("/me")
-async def get_current_user(current_user:CurrentUser, current_user:CurrentUser):
+async def get_current_user(current_user:CurrentUser):
     return current_user
 
 
