@@ -190,7 +190,7 @@ export default function EventCalendar({ id }: { id?: string }) {
                         >
                           <a
                             role="menuitem"
-                            href={`/Gallery`}
+                            href={`#`}
                             className="block px-4 py-2 text-xs text-zinc-700 hover:bg-gray-50"
                           >
                             Book
@@ -198,7 +198,7 @@ export default function EventCalendar({ id }: { id?: string }) {
 
                           <a
                             role="menuitem"
-                            href="/ContactUs"
+                            href="#"
                             className="block px-4 py-2 text-xs text-zinc-700 hover:bg-gray-50"
                           >
                             Set Reminder
