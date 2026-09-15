@@ -31,6 +31,25 @@ const GOLF_EVENTS: GolfEvent[] = [
     course: "Laguna Golf Phuket",
     spotsLeft: 0,
   },
+  {
+    id: "2",
+    title: "Mediterranean Swing(Portugal.Marbella.Mallorca)",
+    host: "",
+    avatar: "https://golfnvibes.com/uploads/media/images/galleryimage10.jpg",
+    dateTime: "17th September - 26th September 2027",
+    course: "Coming Soon",
+    spotsLeft: 45,
+  },
+
+   {
+    id: "3",
+    title: "Turkey Golf Escape 22-29 April",
+    host: "",
+    avatar: "https://golfnvibes.com/uploads/media/images/GalleryImage3.JPG",
+    dateTime: "22nd April - 29th April 2027",
+    course: "Coming Soon",
+    spotsLeft: 45,
+  },
 ];
 
 type ValuePiece = Date | null;
@@ -58,7 +77,7 @@ function AvailabilityBadge({ spotsLeft }: { spotsLeft: number }) {
   return (
     <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#0a4d30] bg-[#0a4d30]/10 border border-[#0a4d30]/20 px-3 py-1 rounded-full">
       <UserGroupIcon className="w-3.5 h-3.5" />
-      {spotsLeft} spots left
+      Coming Soon
     </span>
   );
 }

@@ -9,17 +9,15 @@ from alembic import context
 from app.core.config import settings
 from app.db.database import Base
 
-from app.models.club import Club
+from app.models.member import Club
 from app.models.trip import Trip
 from app.models.tournament import (
     Tournament,
     Host,
     Guest,
     Classification,
-    Results,
-    TournamentRegistration,
 )
-from app.models.event_calendar import EventsCalendar
+from app.models.eventcalendar import EventsCalendar
 
 config = context.config
 
