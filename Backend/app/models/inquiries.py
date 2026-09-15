@@ -35,9 +35,9 @@ class Inquiries(Base):
     )
 
     submited_time: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
+        DateTime(timezone=False),
         nullable=False,
-        default=datetime.now(UTC),
+        default=lambda: datetime.now(UTC).replace(tzinfo=None),
     )
 
     message: Mapped[str] = mapped_column(
