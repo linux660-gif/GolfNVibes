@@ -20,8 +20,8 @@ const TESTIMONIALS: Testimonial[] = [
     id: "luxury-client",
     content:
       "Angie you have cracked the code & you've done it so well. So many people have money but are used to paying sub par experiences from most travel agents. You have covered a niche clientele of golfers who like luxury and are ready to spend, keep it up!",
-    author: "Luxury Client",
-    handle: "@turkey_tour",
+    author: "Ephy Kimani",
+    handle: "@ephy kimani",
   },
   {
     id: "angela",
@@ -36,8 +36,8 @@ const TESTIMONIALS: Testimonial[] = [
     id: "review-crew",
     content:
       "What a fantastic weekend! Huge thanks to Angie for putting everything together—every detail was perfect, from the travel to our stay, the delicious food, and the thrilling golf. I'm so grateful for the new friendships we've created!",
-    author: "Coast Tour Guest",
-    handle: "@review_crew",
+    author: "Sarah Wambui",
+    handle: "@sarah_wambui",
   },
   {
     id: "franq",

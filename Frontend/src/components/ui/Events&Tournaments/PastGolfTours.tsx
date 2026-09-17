@@ -21,22 +21,22 @@ const DEFAULT_TOURS: PastTour[] = [
   {
     id: "morocco-desert-swing",
     title: "Morocco Desert Swing",
-    image: "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments25.jpeg",
+    image: "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/morocco_desert_swing.webp",
   },
   {
     id: "antalya-golf-escape",
     title: "Antalya Golf Escape",
-    image: "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments15.jpeg",
+    image: "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/antalya_golf_escape.webp",
   },
   {
     id: "arusha-golf-safari",
     title: "The Arusha Golf Safari",
-    image: "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments2.jpeg",
+    image: "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/arusha_golf_safari.webp",
   },
   {
     id: "vipingo-weekender",
     title: "Vipingo Weekender",
-    image: "https://golfnvibes.com/uploads/media/images/Gallery/holidays/holidays13.jpeg",
+    image: "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/vipingo_weekender.webp",
   },
 ];
 

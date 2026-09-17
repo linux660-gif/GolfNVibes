@@ -17,7 +17,7 @@ const IMAGES = [
     col: 1,
   },
   {
-    src: "https://golfnvibes.com/uploads/media/images/golflifestyle_img3.jpg",
+    src: "https://golfnvibes.com/uploads/media/images/Gallery/holidays/holidays7.jpeg",
     className:
       "w-32 sm:w-36 md:w-40 lg:w-44 aspect-[4/5] overflow-hidden rounded-xl",
     col: 2,
@@ -30,13 +30,13 @@ const IMAGES = [
   },
 
   {
-    src: "https://golfnvibes.com/uploads/media/images/GalleryImage21.JPG",
+    src: "https://golfnvibes.com/uploads/media/images/golflifestyle3_1.JPG",
     className:
       "w-32 sm:w-36 md:w-40 lg:w-44 aspect-[4/5] overflow-hidden rounded-xl",
     col: 3,
   },
   {
-    src: "https://golfnvibes.com/uploads/media/images/DSC08914.JPG",
+    src: "https://golfnvibes.com/uploads/media/images/golflifestyle3_2.JPG",
     className:
       "w-32 sm:w-36 md:w-40 lg:w-44 aspect-[4/5] overflow-hidden rounded-xl",
     col: 3,

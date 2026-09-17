@@ -18,12 +18,12 @@ export default function AboutPage() {
     <main className="bg-white min-h-screen">
       <AboutHero />
 
-      <Suspense fallback={<SectionFallback minHeight="min-h-96" />}>
-        <VisionMission />
-      </Suspense>
-
       <Suspense fallback={<SectionFallback minHeight="min-h-125" />}>
         <MeetTheTeam />
+      </Suspense>
+
+      <Suspense fallback={<SectionFallback minHeight="min-h-96" />}>
+        <VisionMission />
       </Suspense>
 
       {/* <Suspense fallback={<SectionFallback minHeight="min-h-96" />}>

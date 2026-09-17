@@ -157,6 +157,134 @@ const GALLERY_ITEMS: GalleryItem[] = [
     image:
       "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments21.jpeg",
   },
+  {
+    id: "17",
+    category: "holidays",
+    description:
+      "Embark on a luxury golfing journey across Morocco's golden dunes and legendary desert greens.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing1.JPG",
+  },
+  {
+    id: "18",
+    category: "tournaments",
+    description:
+      "Test your skills under the desert sun in an exciting high-desert match play competition.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing2.JPG",
+  },
+  {
+    id: "19",
+    category: "holidays",
+    description:
+      "Unwind with authentic Moroccan mint tea and sunset views after a spectacular 18 holes.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing3.JPG",
+  },
+  {
+    id: "20",
+    category: "tournaments",
+    description:
+      "A prestigious desert showdown where elite golfers battle for ultimate seasonal honors.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing4.JPG",
+  },
+  {
+    id: "21",
+    category: "holidays",
+    description:
+      "Stay in exclusive luxury riads surrounded by serene desert views and championship fairways.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing5.JPG",
+  },
+  {
+    id: "22",
+    category: "tournaments",
+    description:
+      "A high-stakes championship round played against the backdrop of majestic Atlas sandscapes.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing6.JPG",
+  },
+  {
+    id: "23",
+    category: "holidays",
+    description:
+      "Indulge in traditional hammam spa treatments alongside world-class desert golf courses.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing7.JPG",
+  },
+  {
+    id: "24",
+    category: "tournaments",
+    description:
+      "Dynamic team scramble play taking place during Morocco's iconic golden hour sunset.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing8.JPG",
+  },
+  {
+    id: "25",
+    category: "holidays",
+    description:
+      "Celebrate your round with fine dining, live music, and vibrant desert lounge vibes.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing9.JPG",
+  },
+  {
+    id: "26",
+    category: "tournaments",
+    description:
+      "An exclusive corporate invitation tournament blending high-level networking with premier play.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing10.JPG",
+  },
+  {
+    id: "27",
+    category: "holidays",
+    description:
+      "Discover an oasis getaway featuring private villas, lush palm trees, and endless sunshine.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing11.JPG",
+  },
+  {
+    id: "28",
+    category: "tournaments",
+    description:
+      "The ultimate end-of-season match play final on one of Morocco's finest desert courses.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing12.JPG",
+  },
+  {
+    id: "29",
+    category: "holidays",
+    description:
+      "Experience rich Moroccan heritage, exotic cuisine, and top-tier resort golf in one retreat.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing13.JPG",
+  },
+  {
+    id: "30",
+    category: "tournaments",
+    description:
+      "Competitive twilight tournament followed by an evening trophy presentation under the stars.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing14.JPG",
+  },
+  {
+    id: "31",
+    category: "holidays",
+    description:
+      "Relax poolside with custom cocktails after tackling challenging fairways in the desert.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing15.JPG",
+  },
+  {
+    id: "32",
+    category: "tournaments",
+    description:
+      "An elite exhibition of precision and strategy held on a world-renowned championship course.",
+    image:
+      "https://golfnvibes.com/uploads/media/images/Gallery/morocco/morocco_desert_swing16.JPG",
+  },
 ];
 
 const PRIORITY_COUNT = 4;

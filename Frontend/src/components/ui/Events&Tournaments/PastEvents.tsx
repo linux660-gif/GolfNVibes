@@ -203,7 +203,7 @@ const DEFAULT_TOURNAMENTS: PastTournament[] = [
     title: "Road to Morocco",
     venue: "Limuru",
     date: "17th April 2026",
-    image: "https://golfnvibes.com/uploads/media/images/Gallery/holidays/holidays10.jpeg",
+    image: "https://golfnvibes.com/uploads/media/images/Gallery/holidays/road_to_morocco.webp",
   },
   {
     id: "naivasha-weekender",
@@ -211,14 +211,14 @@ const DEFAULT_TOURNAMENTS: PastTournament[] = [
     venue: "Great Rift Valley Lodge & Kipipiri",
     date: "24th - 25th October 2025",
     
-    image: "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments9.webp",
+    image: "https://golfnvibes.com/uploads/media/images/Gallery/holidays/naivasha_weekender.webp",
   },
   {
     id: "road-antalya",
     title: "Road to Antalya",
     venue: "Sigona Golf Club",
     date: "October 2025",
-    image: "https://golfnvibes.com/uploads/media/images/Gallery/tournaments/tournaments16.jpeg",
+    image: "https://golfnvibes.com/uploads/media/images/Gallery/holidays/road_to_antalya.webp",
   },
 ];
 
