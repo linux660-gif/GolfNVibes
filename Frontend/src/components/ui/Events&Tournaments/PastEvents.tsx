@@ -243,9 +243,7 @@ function TournamentCard({
           loading={priority ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={priority ? "high" : "auto"}
-          width={640}
-          height={480}
-          className="h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:grayscale-0"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
         <div
           aria-hidden="true"

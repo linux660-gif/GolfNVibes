@@ -116,11 +116,14 @@ export default function MeetTheTeam() {
               CURATOR 101
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-black">
-              MEET THE CURATOR
+              MEET THE CURATOR,
             </h2>
+            <h3 className="text-xl sm:text-3xl lg:text-3xl font-light tracking-tight text-black">
+              Angela Livu
+            </h3>
             <div className="w-16 h-0.5 bg-linear-to-r from-[#D4AF37] to-transparent" />
             <h3 className="font-bold text-xl sm:text-2xl text-[#0a4d30]">
-              Hi, I'm Angela. Welcome to Golf N Vibes.
+              Hi, I'm Angie. Welcome to Golf N Vibes.
             </h3>
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
               Golf has taken me to incredible destinations, introduced me to
